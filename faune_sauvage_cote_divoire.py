@@ -11,35 +11,24 @@ st.set_page_config(page_title='App.Conflits-DFRC',
 				     initial_sidebar_state="expanded")
 
 def main():
-
-    
-
-
-
+		st.sidebar.header('CONTROLEUR DE DONNEES')
+		menu = ["Aperçu données", "Visualisation graphique"]
+		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
 		
-					st.sidebar.header('CONTROLEUR DE DONNEES')
-
-			
-
-
-
-					col1, col2 = st.columns([0.3,1.8])
+		if choix == "Aperçu données":
 					
+					col1, col2 = st.columns([0.3,1.8])
 					col2.title("APP. CONFLITS : Gestion des données CHF")
 					col2.markdown("""Cette Application est une version bête en cours de dévéloppement. Elle présente les données
 						des differents conflits homme-faune de 2011 à Juillet 2021 dans tout tout le pays.
 						""")
-
 					col1.image("minef.png", use_column_width=False, width=100)
-
 					col2.markdown("""
 						* ** Source de données: Directions Régionales des Eaux et Forêts.**
 						* ** Traitement de données: Service Cartographique Direction de la Faune et des Services Cynégétiques (DFRC)**
 						""")
 					st.subheader("")
 
-
-			
 					st.subheader("Typologie des conflits")
 					
 					col3, col4, col5, col6, col7 = st.columns(5)
@@ -71,18 +60,29 @@ def main():
 					                    sheet_name='DATA',
 					                    usecols='A:G',
 					                    header=1)
-					st.dataframe(data=df, height=600)
+					st.dataframe(data=df, height=700)
 					st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
 
-					st.subheader("")
-					st.subheader("Rprésentation graphique des données")
+					
+					
 
 					df_statistique = pd.read_excel(
 										io='conflit_faune.xlsx',
 					                    sheet_name='DATA',
 					                    usecols='I:M',
 					                    header=1)
-					
+		
+		elif choix == "Visualisation graphique":
+
+					df = pd.read_excel(io='conflit_faune.xlsx',
+					                    sheet_name='DATA',
+					                    usecols='A:G',
+					                    header=1)
+					#st.dataframe(data=df, height=600)
+					#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
+
+					st.subheader("")
+					st.subheader("Rprésentation graphique des données")
 					#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 					left_column, right_column = st.columns(2)
 					#st.subheader('Effectif total par type de conflits')
@@ -135,4 +135,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
