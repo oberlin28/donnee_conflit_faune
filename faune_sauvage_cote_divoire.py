@@ -12,7 +12,7 @@ st.set_page_config(page_title='App.Conflits-DFRC',
 
 def main():
 		st.sidebar.header('CONTROLEUR DE DONNEES')
-		menu = ["Aperçu données", "Visualisation graphique"]
+		menu = ["Données", "Graphique"]
 		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
 		
 		if choix == "Aperçu données":
