@@ -15,7 +15,7 @@ def main():
 		menu = ["Données", "Graphique"]
 		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
 		
-		if choix == "Aperçu données":
+		if choix == "Données":
 					
 					col1, col2 = st.columns([0.3,1.8])
 					col2.title("APP. CONFLITS : Gestion des données CHF")
@@ -72,7 +72,7 @@ def main():
 					                    usecols='I:M',
 					                    header=1)
 		
-		elif choix == "Visualisation graphique":
+		elif choix == "Graphique":
 
 					df = pd.read_excel(io='conflit_faune.xlsx',
 					                    sheet_name='DATA',
