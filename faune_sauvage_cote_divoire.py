@@ -11,6 +11,7 @@ st.set_page_config(page_title='App.Conflits-DFRC',
 				     initial_sidebar_state="expanded")
 
 def main():
+
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 		menu = ["Données", "Graphique"]
 		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
@@ -19,7 +20,7 @@ def main():
 					
 					col1, col2 = st.columns([0.3,1.8])
 					col2.header("APP.CONFLITS : Gestion des données CHF")
-					col2.markdown("""Cette Application est une version bête en cours de dévéloppement. Elle présente les données
+					col2.markdown("""Cette Application est une version bêta en cours de dévéloppement. Elle présente les données
 						des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
 						""")
 					col1.image("minef.png", use_column_width=False, width=100)
@@ -61,7 +62,9 @@ def main():
 					                    usecols='A:G',
 					                    header=1)
 					st.dataframe(data=df, height=700)
-					st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF')
+		
+			
+					st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF' )
 
 					
 					
