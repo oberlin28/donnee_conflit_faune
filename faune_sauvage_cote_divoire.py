@@ -29,7 +29,7 @@ def main():
 						""")
 					st.subheader("")
 
-					st.subheader("Typologie des conflitss")
+					st.subheader("Typologie des conflits")
 					
 					col3, col4, col5, col6, col7 = st.columns(5)
 					col3.image("elephant.png", use_column_width=False, width=80, caption = 'Eléphant')
