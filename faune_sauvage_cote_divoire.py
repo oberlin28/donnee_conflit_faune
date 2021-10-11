@@ -61,7 +61,7 @@ def main():
 					                    usecols='A:G',
 					                    header=1)
 					st.dataframe(data=df, height=700)
-					st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
+					st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF')
 
 					
 					
