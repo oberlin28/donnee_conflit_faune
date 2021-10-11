@@ -20,7 +20,7 @@ def main():
 					col1, col2 = st.columns([0.3,1.8])
 					col2.title("APP. CONFLITS : Gestion des données CHF")
 					col2.markdown("""Cette Application est une version bête en cours de dévéloppement. Elle présente les données
-						des differents conflits homme-faune de 2011 à Juillet 2021 dans tout tout le pays.
+						des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
 						""")
 					col1.image("minef.png", use_column_width=False, width=100)
 					col2.markdown("""
