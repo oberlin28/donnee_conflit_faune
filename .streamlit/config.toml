@@ -3,7 +3,7 @@
 primaryColor = "#E694FF"
 
 # Couleur d'arrière-plan pour la zone de contenu principale.
-backgroundColor = "#00172B"
+backgroundColor = "#D4F6CB"
 
 # Couleur d'arrière-plan utilisée pour la barre latérale et la plupart des widgets interactifs.
 secondaryBackgroundColor = "#047C60"
