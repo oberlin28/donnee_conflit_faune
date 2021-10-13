@@ -26,7 +26,7 @@ def main():
 					col1.image("minef.png", use_column_width=False, width=100)
 					col2.markdown("""
 						* ** Source de données: Directions Régionales des Eaux et Forêts.**
-						* ** Traitement de données: Service Cartographique Direction de la Faune et des Services Cynégétiques (DFRC)**
+						* ** Traitement de données: Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
 						""")
 					st.subheader("")
 
@@ -63,7 +63,7 @@ def main():
 					                    header=1)
 					st.dataframe(data=df, height=700)
 		
-			
+
 					st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF' )
 
 					
