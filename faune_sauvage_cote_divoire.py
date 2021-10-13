@@ -94,7 +94,7 @@ def main():
 					#st.subheader('Effectif total par type de conflits')
 					pie_chart_complet = pd.DataFrame(df['conflit'].value_counts())					
 					left_column.markdown('__Effectif total par conflits__')
-					left_column.bar_chart(pie_chart_complet, use_container_width=True)
+					left_column.bar_chart(pie_chart_complet, use_container_width=True,)
 
 
 					#st.subheader('Nombre de conflit par année')
