@@ -96,7 +96,7 @@ def main():
 							    default=2021
 							)
 					df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
-					st.dataframe(df_selection)
+					st.sidebar.dataframe(df_selection)
 		
 		elif choix == "Diagramme":
 
