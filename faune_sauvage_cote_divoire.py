@@ -77,6 +77,26 @@ def main():
 					                    sheet_name='DATA',
 					                    usecols='I:M',
 					                    header=1)
+
+					conflit = st.sidebar.multiselect(
+							    "Choisir conflit:",
+							    options=df["conflit"].unique(),
+							    default="HOMME-ELEPHANTS"
+							)
+
+					localite = st.sidebar.multiselect(
+							    "Choisir localité:",
+							    options=df["localite"].unique(),
+							    default="ABIDJAN"
+							)
+
+					annee = st.sidebar.multiselect(
+							    "Choisir année:",
+							    options=df["annee"].unique(),
+							    default=2021
+							)
+					df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
+					st.dataframe(df_selection)
 		
 		elif choix == "Diagramme":
 
