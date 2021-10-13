@@ -3,14 +3,17 @@ import streamlit as st
 import plotly.express as px
 from PIL import Image
 import openpyxl as xl
+import time
 from pathlib import Path 
 import base64
 
-st.set_page_config(page_title='App.Conflits-DFRC', 
-					 layout="wide",
-				     initial_sidebar_state="expanded")
-
 def main():
+		st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
+							 layout="wide",
+						     initial_sidebar_state="expanded",
+						     page_icon='minef.png'
+)
+
 
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 		menu = ["Données", "Diagramme"]
@@ -18,12 +21,12 @@ def main():
 		
 		if choix == "Données":
 					
-					col1, col2 = st.columns([0.3,1.8])
-					col2.header("APP.CONFLITS : Gestion des données CHF")
+					col1, col2 = st.columns([0.2,1.8])
+					col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
 					col2.markdown("""Cette Application est une version bêta en cours de dévéloppement. Elle présente les données
 						des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
 						""")
-					col1.image("minef.png", use_column_width=False, width=100)
+					
 					col2.markdown("""
 						* ** Source de données: Directions Régionales des Eaux et Forêts.**
 						* ** Traitement de données: Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
@@ -55,7 +58,7 @@ def main():
 					## st.sidebar.header('CONTROLEUR DE DONNEES')
 					## selection_annee = st.sidebar.selectbox('Année de conflit', list(reversed(range(2011,2022))))
 
-					### --- CHARGER DONNEES EXCEL
+					### --- CHARGER DONNEES EXCEL ET LES METTRE DANS UN DATAFRAME
 
 					df = pd.read_excel(io='conflit_faune.xlsx',
 					                    sheet_name='DATA',
