@@ -13,7 +13,7 @@ st.set_page_config(page_title='App.Conflits-DFRC',
 def main():
 
 		st.sidebar.header('CONTROLEUR DE DONNEES')
-		menu = ["Données", "Graphique"]
+		menu = ["Données", "Diagramme"]
 		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
 		
 		if choix == "Données":
@@ -75,7 +75,7 @@ def main():
 					                    usecols='I:M',
 					                    header=1)
 		
-		elif choix == "Graphique":
+		elif choix == "Diagramme":
 
 					df = pd.read_excel(io='conflit_faune.xlsx',
 					                    sheet_name='DATA',
