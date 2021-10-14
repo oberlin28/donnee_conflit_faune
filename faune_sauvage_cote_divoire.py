@@ -43,11 +43,20 @@ def main():
 					
 					
 					col3, col4, col5, col6, col7 = st.columns(5)
-					col3.image("elephant.png", use_column_width=False, width=80, caption = 'Eléphant')
-					col4.image("Buffle.png", use_column_width=False, width=80, caption = 'Buffle')
-					col5.image("chimpanzé.png", use_column_width=False, width=50, caption = 'Chimpanzé')
-					col6.image("rhinoceros.png", use_column_width=False, width=80, caption = 'Rhinoceros')
-					col7.image("hippopotamus.png", use_column_width=False, width=100, caption = 'Hippopotame')
+					with col3 :
+						st.image("elephant.png", use_column_width=False, width=80, caption = 'Eléphant')
+					
+					with col4 :
+						st.image("Buffle.png", use_column_width=False, width=80, caption = 'Buffle')
+
+					with col5 :	
+						st.image("chimpanzé.png", use_column_width=False, width=50, caption = 'Chimpanzé')
+					
+					with col6 :
+						st.image("rhinoceros.png", use_column_width=False, width=80, caption = 'Rhinoceros')
+					
+					with col7 :
+						st.image("hippopotamus.png", use_column_width=False, width=100, caption = 'Hippopotame')
 
 					col8, col9, col10, col11, col12 = st.columns(5)
 					col8.image("leopard.png", use_column_width=False, width=80, caption = 'Léopard')
