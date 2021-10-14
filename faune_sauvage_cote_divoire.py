@@ -52,7 +52,7 @@ def main():
 
 
 					st.markdown("""---""")
-					st.subheader("Données des CHF (2011 à Juillet 2021)")
+					st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
 
 
 					### --- BARRE LATERALE
@@ -108,8 +108,8 @@ def main():
 					#st.dataframe(data=df, height=600)
 					#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
 
-					st.subheader("")
 					st.subheader("Rprésentation graphique des données")
+					st.markdown("""---""")
 					#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 					left_column, right_column = st.columns(2)
 					#st.subheader('Effectif total par type de conflits')
