@@ -31,9 +31,10 @@ def main():
 						* ** Source de données: Directions Régionales des Eaux et Forêts.**
 						* ** Traitement de données: Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
 						""")
-					st.subheader("")
 
+					st.markdown("""---""")
 					st.subheader("Typologie des conflits")
+					
 					
 					col3, col4, col5, col6, col7 = st.columns(5)
 					col3.image("elephant.png", use_column_width=False, width=80, caption = 'Eléphant')
@@ -50,7 +51,7 @@ def main():
 					col12.image("epervier.png", use_column_width=False, width=80, caption = 'Epervier')
 
 
-					st.subheader("")
+					st.markdown("""---""")
 					st.subheader("Données des CHF (2011 à Juillet 2021)")
 
 
