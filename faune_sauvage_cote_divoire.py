@@ -16,8 +16,14 @@ def main():
 
 
 		st.sidebar.header('CONTROLEUR DE DONNEES')
+
+		st.sidebar.markdown("""---""")
+		st.sidebar.subheader('FILTRE DES DONNEES')
+		
 		menu = ["Données", "Diagramme"]
-		choix = st.sidebar.selectbox("Selectionner la vue à afficher", menu)
+		choix = st.sidebar.selectbox("CHOISIR LA VUE A AFFICHER", menu)
+
+		st.sidebar.subheader('REQUÊTE SUR TABLEUR')
 		
 		if choix == "Données":
 					
@@ -72,6 +78,7 @@ def main():
 
 					
 					
+					#REQUETE SUR LE TABLEUR
 
 					df_statistique = pd.read_excel(
 										io='conflit_faune.xlsx',
@@ -82,19 +89,19 @@ def main():
 					conflit = st.sidebar.multiselect(
 							    "Choisir conflit:",
 							    options=df["conflit"].unique(),
-							    default="HOMME-ELEPHANTS"
+							    #default="HOMME-ELEPHANTS"
 							)
 
 					localite = st.sidebar.multiselect(
 							    "Choisir localité:",
 							    options=df["localite"].unique(),
-							    default="ABIDJAN"
+							    #default="ABIDJAN"
 							)
 
 					annee = st.sidebar.multiselect(
 							    "Choisir année:",
 							    options=df["annee"].unique(),
-							    default=2021
+							    #default=2021
 							)
 					df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
 					st.sidebar.dataframe(df_selection)
@@ -110,6 +117,7 @@ def main():
 
 					st.subheader("Rprésentation graphique des données")
 					st.markdown("""---""")
+
 					#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 					left_column, right_column = st.columns(2)
 					#st.subheader('Effectif total par type de conflits')
@@ -127,7 +135,7 @@ def main():
 		
 					
 					#AJOUTE BARRE LATERALE
-					st.sidebar.subheader('Filtre des données')
+					
 
 					#AJOUT DES DONNEES DU FILTRE
 					annee_var = df['annee'].unique().tolist()
