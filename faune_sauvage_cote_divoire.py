@@ -15,6 +15,8 @@ def main():
 )
 
 
+
+
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
@@ -68,6 +70,7 @@ def main():
 
 					st.markdown("""---""")
 					st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+					st.map()
 
 
 					### --- BARRE LATERALE
