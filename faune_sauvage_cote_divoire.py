@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
 import folium
-from streamlit_folium import folium_static 
+#from streamlit_folium import folium_static 
 from PIL import Image
 import openpyxl as xl
 import time
