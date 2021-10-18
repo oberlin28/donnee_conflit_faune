@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
 import folium
-#from streamlit_folium import folium_static 
+from streamlit_folium import folium_static 
 from PIL import Image
 import openpyxl as xl
 import time
@@ -211,8 +211,19 @@ def main():
 			#st.dataframe(ip)
 			coord = pd.DataFrame(df)
 			#st.dataframe(coord)
-			fichier = pd.DataFrame(coord, columns=['latitude', 'longitude'])
-			st.map(fichier)
+			#****fichier = pd.DataFrame(coord, columns=['latitude', 'longitude'])
+			#*****st.map(fichier)
+
+			carte = folium.Map(location=[7.3056, -5.3888], zoom_start=6, control_scale=True) 
+			for conflit, location_info in df.iterrows():
+				folium.Marker([location_info["latitude"], location_info["longitude"]], 
+					popup=location_info["conflit"]).add_to(carte)
+				folium_static(carte)
+				return carte
+
+
+    		
+			
 
 
 
