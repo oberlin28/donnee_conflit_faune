@@ -244,6 +244,8 @@ def main():
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
 					
+					draw = plugins.Draw(export=True)
+					draw.add_to(carte)
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					#for (index, row) in df.iterrows():
 					#for (i, row) in df.iterrows():
@@ -305,7 +307,7 @@ def main():
 					#plugins.ScrollZoomToggler().add_to(carte)
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
-					plugins.Fullscreen(position='topright').add_to(carte)
+					plugins.Fullscreen(position='topleft').add_to(carte)
 
 					# add layer control to show different maps
 					folium.LayerControl().add_to(carte) 
