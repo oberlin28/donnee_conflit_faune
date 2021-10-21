@@ -257,7 +257,7 @@ def main():
 						#folium.Marker(location=[lat, lng], popup=)
 
 					#CREATION D'UN CLUSTER
-					markerCluster = MarkerCluster().add_to(carte)
+					markerCluster = MarkerCluster(name='Conflits homme-faune').add_to(carte)
 
 					for (index, row) in df.iterrows():
 
@@ -311,7 +311,7 @@ def main():
 					folium.LayerControl().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=600)
+					folium_static(carte, width=1070, height=700)
 
 			if choix_deuxieme == "HOMME-ELEPHANTS":
 					
