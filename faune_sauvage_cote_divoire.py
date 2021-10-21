@@ -206,7 +206,7 @@ def main():
 
 		elif choix == "Carte":
 
-			menu_deuxieme = ["TOUS CONFLITS", "HOMME-ELEPHANTS", "HOMME-HIPPOPOTAMES"]
+			menu_deuxieme = ["TOUS CONFLITS", "HOMME-ELEPHANTS", "HOMME-HIPPOPOTAMES", "HOMME-BUFFLES"]
 			choix_deuxieme = st.sidebar.selectbox("CHOISIR CONFLIT", menu_deuxieme)
 
 			if choix_deuxieme == "TOUS CONFLITS":
@@ -220,6 +220,9 @@ def main():
 									                    header=1)
 
 					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANTS"])
+					#df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLES"])
+					#df_chauvesouris = pd.DataFrame(df[df["conflit"] == "HOMME-CHAUVE-SOURIS"])
+
 					#ip = df[["latitude", "longitude", "conflit"]]
 					
 					#op = df.set_index("latitude")#[("latitude", "conflit")]
@@ -255,14 +258,15 @@ def main():
 
 					#ELEPHANTS UNIQUEMENT DANS LA CARTE
 
-					for (index, row) in df_elephant.iterrows():
+					#for (index, row) in df_elephant.iterrows():
 
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
-							icon = folium.Icon(color='green', icon='paw', prefix='fa'),  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
-							tooltip="cliquer").add_to(carte)
+						#folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						#	icon = folium.Icon(color='green', icon='paw', prefix='fa'),  
+						#	popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+						#	+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+						#	+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+						#	tooltip="cliquer").add_to(carte)
+
 
 
 
@@ -298,9 +302,6 @@ def main():
 					folium_static(carte, width=1070, height=600)
 
 			if choix_deuxieme == "HOMME-ELEPHANTS":
-
-					#df1 = pd.read_csv("clean_data_sample.csv")
-					#st.dataframe(df1)
 					
 					df = pd.read_excel(io='conflit_faune.xlsx',
 									                    sheet_name='DATA',
@@ -309,17 +310,7 @@ def main():
 
 					#FILTRE ELEPHANTS UNIQUEMENT DANS LE DATAFRAME
 					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANTS"])
-					#st.dataframe(df2)
 
-					
-					#ip = df[["latitude", "longitude", "conflit"]]
-					
-					#op = df.set_index("latitude")#[("latitude", "conflit")]
-					#st.dataframe(ip)
-					#coord = pd.DataFrame(df)
-					#st.dataframe(coord)
-					#****fichier = pd.DataFrame(coord, columns=['latitude', 'longitude'])
-					#*****st.map(fichier)
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
@@ -348,9 +339,176 @@ def main():
 					#folium.raster_layers.TileLayer('Stamen Watercolor').add_to(carte)
 					#folium.raster_layers.TileLayer('CartoDB Positron').add_to(carte)
 					#folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(carte)
+
+					#Ajouter mini-carte
+					mini_carte = plugins.MiniMap(toggle_display=True)
+					carte.add_child(mini_carte)
+
+					#AJOUTE PLEIN ECRAN A LA CARTE
+					plugins.Fullscreen(position='topright').add_to(carte)
+
+					# add layer control to show different maps
+					folium.LayerControl().add_to(carte)
+					#folium.LayerGroup().add_to(carte) 
+					
+					# AFFICHER LA CARTE DANS STREAMLIT
+					folium_static(carte, width=1070, height=600)
+
+
+
+			if choix_deuxieme == "HOMME-BUFFLES":
+					
+					df = pd.read_excel(io='conflit_faune.xlsx',
+									                    sheet_name='DATA',
+									                    usecols='A:I',
+									                    header=1)
+
+					#FILTRE ELEPHANTS UNIQUEMENT DANS LE DATAFRAME
+					df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLES"])
+
+
+					# VARIABLE POUR AFFICHER LA CARTE
+					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+					
+					#INSERER LES DONNEES LAT LONG DANS LA CARTE
+					#for (index, row) in df.iterrows():
+					for (index, row) in df_buffle.iterrows():
+
+						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							tooltip="cliquer").add_to(carte)
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+
+					#plugins.HeatMap()
+
+					# add tiles to map
+					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
+					folium.raster_layers.TileLayer('Stamen Terrain').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Toner').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Watercolor').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Positron').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(carte)
 					#folium.raster_layers.TileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}').add_to(carte)
 					#folium.raster_layers.TileLayer('https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
 						#attr='Mapbox attribution').add_to(carte)
+
+					#Ajouter mini-carte
+					mini_carte = plugins.MiniMap(toggle_display=True)
+					carte.add_child(mini_carte)
+					
+					#Ajouter Zoom dans la mini-carte
+					#plugins.ScrollZoomToggler().add_to(carte)
+
+					#AJOUTE PLEIN ECRAN A LA CARTE
+					plugins.Fullscreen(position='topright').add_to(carte)
+
+					# add layer control to show different maps
+					folium.LayerControl().add_to(carte)
+					#folium.LayerGroup().add_to(carte) 
+					
+					# AFFICHER LA CARTE DANS STREAMLIT
+					folium_static(carte, width=1070, height=600)
+
+			
+			#CONDITION DE BUFFLE
+			elif choix_deuxieme == "HOMME-BUFFLES":
+					
+					df = pd.read_excel(io='conflit_faune.xlsx',
+									                    sheet_name='DATA',
+									                    usecols='A:I',
+									                    header=1)
+
+					#FILTRE ELEPHANTS UNIQUEMENT DANS LE DATAFRAME
+					df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLES"])
+
+					# VARIABLE POUR AFFICHER LA CARTE
+					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+					
+					#INSERER LES DONNEES LAT LONG DANS LA CARTE
+					for (index, row) in df_buffle.iterrows():
+
+						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							tooltip="cliquer").add_to(carte)
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+
+
+					# add tiles to map
+					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
+					folium.raster_layers.TileLayer('Stamen Terrain').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Toner').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Watercolor').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Positron').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(carte)
+
+					#Ajouter mini-carte
+					mini_carte = plugins.MiniMap(toggle_display=True)
+					carte.add_child(mini_carte)
+					
+					#Ajouter Zoom dans la mini-carte
+					#plugins.ScrollZoomToggler().add_to(carte)
+
+					#AJOUTE PLEIN ECRAN A LA CARTE
+					plugins.Fullscreen(position='topright').add_to(carte)
+
+					# add layer control to show different maps
+					folium.LayerControl().add_to(carte)
+					#folium.LayerGroup().add_to(carte) 
+					
+					# AFFICHER LA CARTE DANS STREAMLIT
+					folium_static(carte, width=1070, height=600)
+
+			
+
+			#CONDITIONS DE HIPPO
+
+			if choix_deuxieme == "HOMME-HIPPOPOTAMES":
+					
+					df = pd.read_excel(io='conflit_faune.xlsx',
+									                    sheet_name='DATA',
+									                    usecols='A:I',
+									                    header=1)
+
+					#FILTRE ELEPHANTS UNIQUEMENT DANS LE DATAFRAME
+					df_hippo = pd.DataFrame(df[df["conflit"] == "HOMME-HIPPOPOTAMES"])
+
+					# VARIABLE POUR AFFICHER LA CARTE
+					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+					
+					#INSERER LES DONNEES LAT LONG DANS LA CARTE
+					for (index, row) in df_hippo.iterrows():
+
+						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							tooltip="cliquer").add_to(carte)
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+
+
+					# add tiles to map
+					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
+					folium.raster_layers.TileLayer('Stamen Terrain').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Toner').add_to(carte)
+					#folium.raster_layers.TileLayer('Stamen Watercolor').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Positron').add_to(carte)
+					#folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(carte)
 
 					#Ajouter mini-carte
 					mini_carte = plugins.MiniMap(toggle_display=True)
