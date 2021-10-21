@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import folium
 from folium import plugins
 from streamlit_folium import folium_static 
+from folium.plugins import MarkerCluster
 from PIL import Image
 import openpyxl as xl
 import time
@@ -19,15 +20,15 @@ def main():
 								     page_icon='minef.png')
 
 
-		#@st.cache
 
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
-		st.sidebar.subheader('FILTRE DES DONNEES')
-				
+		
+		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
 		menu = ["Données", "Diagramme", "Carte"]
-		choix = st.sidebar.selectbox("CHOISIR LA VUE A AFFICHER", menu)
+		choix = st.sidebar.selectbox("Données * Diagramme * Carte", menu)
+
 
 
 		df = pd.read_excel(io='conflit_faune.xlsx',
@@ -41,6 +42,7 @@ def main():
 							st.sidebar.subheader('REQUÊTE OU RECHERCHE')
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
+							#col1.image("minef.png", width=80)
 							col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
 							col2.markdown("""Cette Application est une version bêta en cours de dévéloppement. Elle présente les données
 								des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
@@ -111,23 +113,26 @@ def main():
 							                    #header=1)
 
 							conflit = st.sidebar.multiselect("Choisir conflit:",
-									    options=df["conflit"].unique(),
+									    options=df["conflit"].unique())
 									    #default="HOMME-ELEPHANTS"
-									)
+									
 
 							localite = st.sidebar.multiselect(
 									    "Choisir localité:",
-									    options=df["localite"].unique(),
+									    options=df["localite"].unique())
 									    #default="ABIDJAN"
-									)
+									
 
 							annee = st.sidebar.multiselect(
 									    "Choisir année:",
-									    options=df["annee"].unique(),
+									    options=df["annee"].unique())
 									    #default=2021
-									)
+									
 							df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
-							st.sidebar.dataframe(df_selection)
+							
+							st.markdown("""---""")
+							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							st.dataframe(df_selection)
 				
 		elif choix == "Diagramme":
 
@@ -210,6 +215,10 @@ def main():
 			choix_deuxieme = st.sidebar.selectbox("CHOISIR CONFLIT", menu_deuxieme)
 
 			if choix_deuxieme == "TOUS CONFLITS":
+					#my_bar = st.progress(0)
+					#for percent_complete in range(100):
+						#time.sleep(0.05)
+						#my_bar.progress(percent_complete + 1)
 
 					#df1 = pd.read_csv("clean_data_sample.csv")
 					#st.dataframe(df1)
@@ -247,6 +256,9 @@ def main():
 						#'<b>'+'<br>'+ "Annee : "+'</b>'+ df.at[i, 'annee']
 						#folium.Marker(location=[lat, lng], popup=)
 
+					#CREATION D'UN CLUSTER
+					markerCluster = MarkerCluster().add_to(carte)
+
 					for (index, row) in df.iterrows():
 
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
@@ -254,7 +266,7 @@ def main():
 							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
 							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
 							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
-							tooltip="cliquer").add_to(carte)
+							tooltip="cliquer").add_to(markerCluster)
 
 					#ELEPHANTS UNIQUEMENT DANS LA CARTE
 
@@ -271,7 +283,7 @@ def main():
 
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
 					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 					# add tiles to map
@@ -327,7 +339,7 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
 					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 					#plugins.HeatMap()
@@ -382,7 +394,7 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
 					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 					#plugins.HeatMap()
@@ -441,7 +453,7 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
 					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 
@@ -498,7 +510,7 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
 					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 
