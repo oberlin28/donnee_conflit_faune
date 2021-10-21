@@ -219,7 +219,7 @@ def main():
 									                    usecols='A:I',
 									                    header=1)
 
-					
+					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANTS"])
 					#ip = df[["latitude", "longitude", "conflit"]]
 					
 					#op = df.set_index("latitude")#[("latitude", "conflit")]
@@ -234,14 +234,41 @@ def main():
 					
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					#for (index, row) in df.iterrows():
+					#for (i, row) in df.iterrows():
+						#lat = df.at[i, 'latitude']
+						#lng = df.at[i, 'longitude']
+						#info = df.at[i, 'conflit']
+
+						#popup = '<b>'+'<br>'+ "INFORMATION" + '</br>'+'</b>' + '<b>'+'<br>'+ "Conflit : "+'</b>'+ df.at[i, 'conflit'] +
+						#'<b>'+'<br>'+ "Localité : "+'</b>'+ df.at[i, 'localite'] +
+						#'<b>'+'<br>'+ "Annee : "+'</b>'+ df.at[i, 'annee']
+						#folium.Marker(location=[lat, lng], popup=)
+
 					for (index, row) in df.iterrows():
 
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</br>'+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</br>'+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</br>'+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
 							tooltip="cliquer").add_to(carte)
+
+					#ELEPHANTS UNIQUEMENT DANS LA CARTE
+
+					for (index, row) in df_elephant.iterrows():
+
+						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+							icon = folium.Icon(color='green', icon='paw', prefix='fa'),  
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							tooltip="cliquer").add_to(carte)
+
+
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 					# add tiles to map
 					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
@@ -303,10 +330,16 @@ def main():
 
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</br>'+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</br>'+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</br>'+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
 							tooltip="cliquer").add_to(carte)
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.GeoJson('foret_classee.geojson', name='Forêt Classée').add_to(carte)
+					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+
+					#plugins.HeatMap()
 
 					# add tiles to map
 					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
@@ -330,7 +363,8 @@ def main():
 					plugins.Fullscreen(position='topright').add_to(carte)
 
 					# add layer control to show different maps
-					folium.LayerControl().add_to(carte) 
+					folium.LayerControl().add_to(carte)
+					#folium.LayerGroup().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=600)
