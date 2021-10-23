@@ -131,8 +131,9 @@ def main():
 							df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
 							
 							st.markdown("""---""")
-							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							st.subheader("Resultat de la recherche ci-dessous")
 							st.dataframe(df_selection)
+							st.sidebar.text(f'voir le resultat ci-dessous')
 				
 		elif choix == "Diagramme":
 
@@ -282,11 +283,26 @@ def main():
 						#	tooltip="cliquer").add_to(carte)
 
 
+					# Add hover functionality.
+					highlight_function = lambda x: {'fillColor': '#000000', 
+					                                'color':'#000000', 
+					                                'fillOpacity': 0.50, 
+					                                'weight': 0.1}
 
+
+        
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
-					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
+						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
+						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
+						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					
+					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
 
 					# add tiles to map
 					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
@@ -340,9 +356,29 @@ def main():
 							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
 							tooltip="cliquer").add_to(carte)
 
+
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
-					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+					# Add hover functionality.
+					highlight_function = lambda x: {'fillColor': '#000000', 
+					                                'color':'#000000', 
+					                                'fillOpacity': 0.50, 
+					                                'weight': 0.1}
+
+
+        
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
+						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
+						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
+						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					
+					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					#folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
 
 					#plugins.HeatMap()
 
@@ -366,7 +402,7 @@ def main():
 					#folium.LayerGroup().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=600)
+					folium_static(carte, width=1070, height=700)
 
 
 
@@ -395,9 +431,27 @@ def main():
 							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
 							tooltip="cliquer").add_to(carte)
 
+					
+					# Add hover functionality.
+					highlight_function = lambda x: {'fillColor': '#000000', 
+					                                'color':'#000000', 
+					                                'fillOpacity': 0.50, 
+					                                'weight': 0.1}
+
+
+        
+
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
-					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
+						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
+						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
+						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					
+					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
 
 					#plugins.HeatMap()
 
@@ -427,7 +481,7 @@ def main():
 					#folium.LayerGroup().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=600)
+					folium_static(carte, width=1070, height=700)
 
 			
 			#CONDITION DE BUFFLE
@@ -455,8 +509,26 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
-					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+					# Add hover functionality.
+					highlight_function = lambda x: {'fillColor': '#000000', 
+					                                'color':'#000000', 
+					                                'fillOpacity': 0.50, 
+					                                'weight': 0.1}
+
+
+        
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
+						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
+						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
+						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					
+					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
 
 
 					# add tiles to map
@@ -482,7 +554,7 @@ def main():
 					#folium.LayerGroup().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=600)
+					folium_static(carte, width=1070, height=700)
 
 			
 
@@ -512,8 +584,26 @@ def main():
 							tooltip="cliquer").add_to(carte)
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.GeoJson('foret_classee.geojson', name='Forêt Classée', style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1}).add_to(carte)
-					folium.GeoJson('aire_protegee.geojson', name='Aire Protégée').add_to(carte)
+					# Add hover functionality.
+					highlight_function = lambda x: {'fillColor': '#000000', 
+					                                'color':'#000000', 
+					                                'fillOpacity': 0.50, 
+					                                'weight': 0.1}
+
+
+        
+
+					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
+						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
+						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
+						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+					
+					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
 
 
 					# add tiles to map
@@ -539,7 +629,7 @@ def main():
 					#folium.LayerGroup().add_to(carte) 
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=600)
+					folium_static(carte, width=1070, height=700)
 			
 
 
