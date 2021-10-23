@@ -229,7 +229,7 @@ def main():
 									                    usecols='A:I',
 									                    header=1)
 
-					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANTS"])
+					#df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANTS"])
 					#df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLES"])
 					#df_chauvesouris = pd.DataFrame(df[df["conflit"] == "HOMME-CHAUVE-SOURIS"])
 
@@ -243,9 +243,10 @@ def main():
 					#*****st.map(fichier)
 
 					# VARIABLE POUR AFFICHER LA CARTE
-					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) #prefer_canvas=True
 					
 					draw = plugins.Draw(export=True)
+					
 					draw.add_to(carte)
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					#for (index, row) in df.iterrows():
@@ -344,6 +345,12 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+
+					draw = plugins.Draw(export=True)
+					
+					draw.add_to(carte)
+
+					#plugins.Fullscreen(position='topleft').add_to(carte)
 					
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					#for (index, row) in df.iterrows():
@@ -395,86 +402,7 @@ def main():
 					carte.add_child(mini_carte)
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
-					plugins.Fullscreen(position='topright').add_to(carte)
-
-					# add layer control to show different maps
-					folium.LayerControl().add_to(carte)
-					#folium.LayerGroup().add_to(carte) 
-					
-					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=700)
-
-
-
-			if choix_deuxieme == "HOMME-BUFFLES":
-					
-					df = pd.read_excel(io='conflit_faune.xlsx',
-									                    sheet_name='DATA',
-									                    usecols='A:I',
-									                    header=1)
-
-					#FILTRE ELEPHANTS UNIQUEMENT DANS LE DATAFRAME
-					df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLES"])
-
-
-					# VARIABLE POUR AFFICHER LA CARTE
-					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
-					
-					#INSERER LES DONNEES LAT LONG DANS LA CARTE
-					#for (index, row) in df.iterrows():
-					for (index, row) in df_buffle.iterrows():
-
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
-							icon = folium.Icon(color='red', icon='paw', prefix='fa'),  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
-							tooltip="cliquer").add_to(carte)
-
-					
-					# Add hover functionality.
-					highlight_function = lambda x: {'fillColor': '#000000', 
-					                                'color':'#000000', 
-					                                'fillOpacity': 0.50, 
-					                                'weight': 0.1}
-
-
-        
-
-					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
-					folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
-						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
-						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
-						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
-						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
-					
-					folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
-						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
-						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
-						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
-
-					#plugins.HeatMap()
-
-					# add tiles to map
-					folium.raster_layers.TileLayer('Open Street Map').add_to(carte)
-					folium.raster_layers.TileLayer('Stamen Terrain').add_to(carte)
-					#folium.raster_layers.TileLayer('Stamen Toner').add_to(carte)
-					#folium.raster_layers.TileLayer('Stamen Watercolor').add_to(carte)
-					#folium.raster_layers.TileLayer('CartoDB Positron').add_to(carte)
-					#folium.raster_layers.TileLayer('CartoDB Dark_Matter').add_to(carte)
-					#folium.raster_layers.TileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}').add_to(carte)
-					#folium.raster_layers.TileLayer('https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
-						#attr='Mapbox attribution').add_to(carte)
-
-					#Ajouter mini-carte
-					mini_carte = plugins.MiniMap(toggle_display=True)
-					carte.add_child(mini_carte)
-					
-					#Ajouter Zoom dans la mini-carte
-					#plugins.ScrollZoomToggler().add_to(carte)
-
-					#AJOUTE PLEIN ECRAN A LA CARTE
-					plugins.Fullscreen(position='topright').add_to(carte)
+					plugins.Fullscreen(position='topleft').add_to(carte)
 
 					# add layer control to show different maps
 					folium.LayerControl().add_to(carte)
@@ -485,7 +413,7 @@ def main():
 
 			
 			#CONDITION DE BUFFLE
-			elif choix_deuxieme == "HOMME-BUFFLES":
+			if choix_deuxieme == "HOMME-BUFFLES":
 					
 					df = pd.read_excel(io='conflit_faune.xlsx',
 									                    sheet_name='DATA',
@@ -497,6 +425,11 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+
+					draw = plugins.Draw(export=True)
+					
+					draw.add_to(carte)
+
 					
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					for (index, row) in df_buffle.iterrows():
@@ -547,7 +480,7 @@ def main():
 					#plugins.ScrollZoomToggler().add_to(carte)
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
-					plugins.Fullscreen(position='topright').add_to(carte)
+					plugins.Fullscreen(position='topleft').add_to(carte)
 
 					# add layer control to show different maps
 					folium.LayerControl().add_to(carte)
@@ -560,7 +493,7 @@ def main():
 
 			#CONDITIONS DE HIPPO
 
-			if choix_deuxieme == "HOMME-HIPPOPOTAMES":
+			elif choix_deuxieme == "HOMME-HIPPOPOTAMES":
 					
 					df = pd.read_excel(io='conflit_faune.xlsx',
 									                    sheet_name='DATA',
@@ -572,6 +505,10 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
+
+					draw = plugins.Draw(export=True)
+					
+					draw.add_to(carte)
 					
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
 					for (index, row) in df_hippo.iterrows():
@@ -622,7 +559,7 @@ def main():
 					#plugins.ScrollZoomToggler().add_to(carte)
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
-					plugins.Fullscreen(position='topright').add_to(carte)
+					plugins.Fullscreen(position='topleft').add_to(carte)
 
 					# add layer control to show different maps
 					folium.LayerControl().add_to(carte)
