@@ -192,7 +192,7 @@ def main():
 							annee_selection = st.sidebar.multiselect('Annee de conflit :', annee_var, default=2020)
 
 							conflit_var = df['conflit'].unique().tolist()
-							conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANTS')
+							conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
 
 							
 							## FILTRE DE DONNEES PAR CONFLIT
