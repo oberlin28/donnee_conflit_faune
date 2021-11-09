@@ -11,7 +11,7 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
-from gsheetsdb import connect
+#from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
 import time
