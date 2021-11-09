@@ -11,6 +11,7 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
+from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
 import time
@@ -42,6 +43,19 @@ def main():
 							                    usecols='A:I',
 							                    header=1)
 
+		# Create a connection object.
+		#conn = connect()
+		#def run_query(query):
+		#    rows = conn.execute(query, headers=1)
+		#    return rows
+
+		#sheet_url = st.secrets["public_gsheets_url"]
+		#rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
+		#st.dataframe(rows, height=700)
+
+		#for row in rows:
+		#	st.write(f"{row.localite} {row.conflit} {int(row.annee)}")
+		#	pd.
 				
 		if choix == "Données":
 
@@ -218,10 +232,10 @@ def main():
 
 		elif choix == "Carte":
 
-			menu_deuxieme = ["TOUS LES CONFLITS", "CARTE DE CHALEUR"]
+			menu_deuxieme = ["CARTE DES CONFLITS", "CARTE DE CHALEUR"]
 			choix_deuxieme = st.sidebar.selectbox("Choisir type de carte", menu_deuxieme)
 
-			if choix_deuxieme == "TOUS LES CONFLITS":
+			if choix_deuxieme == "CARTE DES CONFLITS":
 					#my_bar = st.progress(0)
 					#for percent_complete in range(100):
 						#time.sleep(0.05)
