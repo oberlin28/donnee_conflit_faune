@@ -37,6 +37,10 @@ def main():
 		choix = st.sidebar.selectbox("Données * Diagramme * Carte", menu)
 
 
+		
+
+
+
 
 		df = pd.read_excel(io='conflit_faune.xlsx',
 							                    sheet_name='DATA',
@@ -230,12 +234,17 @@ def main():
 							st.plotly_chart(graphique)
 
 
+
 		elif choix == "Carte":
 
-			menu_deuxieme = ["CARTE DES CONFLITS", "CARTE DE CHALEUR"]
-			choix_deuxieme = st.sidebar.selectbox("Choisir type de carte", menu_deuxieme)
+			page_nom = ["Carte de conflits", "Carte de charleur" ]
+			page = st.sidebar.radio('Aller à', page_nom)
 
-			if choix_deuxieme == "CARTE DES CONFLITS":
+
+			#menu_deuxieme = ["CARTE DES CONFLITS", "CARTE DE CHALEUR"]
+			#choix_deuxieme = st.sidebar.selectbox("Choisir type de carte", menu_deuxieme)
+
+			if page == "Carte de conflits":
 					#my_bar = st.progress(0)
 					#for percent_complete in range(100):
 						#time.sleep(0.05)
@@ -507,7 +516,7 @@ def main():
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=700)
 
-			if choix_deuxieme == "CARTE DE CHALEUR":
+			if page == "Carte de charleur":
 
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
 					
