@@ -243,6 +243,7 @@ def main():
 
 					#df1 = pd.read_csv("clean_data_sample.csv")
 					#st.dataframe(df1)
+					st.title("CARTOGRAPHIE DES TYPES DE CONFLITS DE 2011 A 2021 ")
 					
 					df = pd.read_excel(io='conflit_faune.xlsx',
 									                    sheet_name='DATA',
