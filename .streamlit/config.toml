@@ -14,3 +14,5 @@ textColor = "#FFF"
 # Famille de polices pour tout le texte de l'application, à l'exception des blocs de code. L'un de "sans serif", "serif" ou "monospace".
 # Par défaut : "sans empattement"
 font = "sans serif"
+
+
