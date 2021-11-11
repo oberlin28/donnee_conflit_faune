@@ -447,7 +447,7 @@ def main():
 					foyer_conflit = folium.features.GeoJson('foyer_conflits.geojson', name='Foyer de conflit (Departement)', popup=folium.features.GeoJsonPopup(fields=["NOM"]+["REG_2012"], aliases=['Foyer de :','Region de :']), 
 						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['NOM','REG_2012'],aliases=['Foyer de : ','Region de : '], 
 						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
-						style_function=lambda x:{'fillColor': '#708090', 'color': '#000000', 'fillOpacity':4, 'weight':0.3}).add_to(carte)
+						style_function=lambda x:{'fillColor': '#708090', 'color': '#000000', 'fillOpacity':4, 'weight':0.3}, show = False).add_to(carte)
 
 
 					fc = folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
