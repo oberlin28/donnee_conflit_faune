@@ -19,15 +19,14 @@ from pathlib import Path
 import base64
 
 
+st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
+							 layout="wide",
+						     initial_sidebar_state="expanded",
+						     page_icon='minef.png')
+
+
 def main():
 		
-		st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
-									 layout="wide",
-								     initial_sidebar_state="expanded",
-								     page_icon='minef.png')
-
-
-
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
@@ -41,7 +40,7 @@ def main():
 
 
 
-		
+
 		df = pd.read_excel(io='conflit_faune.xlsx',
 							                    sheet_name='DATA',
 							                    usecols='A:I',
@@ -95,7 +94,7 @@ def main():
 								st.image("rhinoceros.png", use_column_width=False, width=80, caption = 'Rhinoceros')
 							
 							with col7 :
-								st.image("hippopotamus.png", use_column_width=False, width=100, caption = 'Hippopotame')
+								st.image("hippopotamus.png", use_column_width=False, width=80, caption = 'Hippopotame')
 
 							col8, col9, col10, col11, col12 = st.columns(5)
 							col8.image("leopard.png", use_column_width=False, width=80, caption = 'Léopard')
@@ -252,12 +251,13 @@ def main():
 
 					#df1 = pd.read_csv("clean_data_sample.csv")
 					#st.dataframe(df1)
-					st.header("CARTOGRAPHIE DES TYPES DE CONFLITS DE 2011 A 2021 ")
+					#st.header("CARTOGRAPHIE DES TYPES DE CONFLITS DE 2011 A 2021 ")
 					
 					df = pd.read_excel(io='conflit_faune.xlsx',
 									                    sheet_name='DATA',
 									                    usecols='A:I',
 									                    header=1)
+					#df = df[['latitude'].notnull() & ['longitude'].notnull()]
 
 					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANT"])
 					df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLE"])
@@ -285,7 +285,7 @@ def main():
 					
 
 					#OUTILS DESSINS
-					draw = plugins.Draw(export=False)
+					draw = plugins.Draw(export=True)
 
 					#POSITION DE LA SOURIS
 					MousePosition(separator=' | ', prefix="Coordonnée lat I lon :").add_to(carte)
@@ -310,7 +310,7 @@ def main():
 						#folium.Marker(location=[lat, lng], popup=)
 
 					#CREATION D'UN CLUSTER
-					markerCluster_elephant = MarkerCluster(name='Homme-Faune').add_to(carte)
+					markerCluster_elephant = MarkerCluster(name='Conflit Homme-Faune').add_to(carte)
 					#markerCluster_buffle = MarkerCluster(name='homme-buffle').add_to(carte)
 					#markerCluster_chauvesouris = MarkerCluster(name='homme-chauve-souris').add_to(carte)
 					#markerCluster_chimpanze = MarkerCluster(name='homme-chimpanzé').add_to(carte)
@@ -320,7 +320,8 @@ def main():
 					#markerCluster_crocodile = MarkerCluster(name='homme-Crocodile').add_to(carte)
 					#markerCluster_singe = MarkerCluster(name='homme-Singe').add_to(carte)
 					#markerCluster_epervier = MarkerCluster(name='homme-Epervier').add_to(carte)
-
+					#df_elephant = df_elephant[['latitude'].notnull() & ['longitude'].notnull()]
+					#df_elephant = list(df_elephant[['latitude', 'longitude']].values)
 					for (index, row) in df_elephant.iterrows():
 						icon_elephant = folium.features.CustomIcon('./elephant2.png', icon_size=(30,30))
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
@@ -443,11 +444,17 @@ def main():
         			#groupe_entite = FeatureGroup(name="Aire protégée")
 
 					#AJOUT DE FICHIER DE FORME AU FORMAT GEOJSON
+					foyer_conflit = folium.features.GeoJson('foyer_conflits.geojson', name='Foyer de conflit (Departement)', popup=folium.features.GeoJsonPopup(fields=["NOM"]+["REG_2012"], aliases=['Foyer de :','Region de :']), 
+						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['NOM','REG_2012'],aliases=['Foyer de : ','Region de : '], 
+						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
+						style_function=lambda x:{'fillColor': '#708090', 'color': '#000000', 'fillOpacity':4, 'weight':0.3}, show = False).add_to(carte)
+
+
 					fc = folium.features.GeoJson('foret_classee.geojson', name='Forêt Classée', highlight_function = highlight_function, 
 						tooltip=folium.features.GeoJsonTooltip(fields=['nom','sup'], aliases=['Nom FC :','Superficie (ha) :'], 
 						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")), 
 						popup=folium.features.GeoJsonPopup(fields=["nom"]+["sup"], aliases=['Nom FC :','Superficie (ha) :']), 
-						style_function=lambda x:{'fillColor': '#228B22', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+						style_function=lambda x:{'fillColor': '#00FF00', 'color': '#228B22', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
 
 					#folium.map.CustomPane("nom").add_to()
 
@@ -460,11 +467,15 @@ def main():
 					    search_label="nom",
 					    weight=2
 					).add_to(carte)
+
 					
 					ap = folium.features.GeoJson('aire_protegee.geojson', name='Aire Protégée', popup=folium.features.GeoJsonPopup(fields=["Nom"]+["Surface"], aliases=['Nom AP :','Superficie (ha) :']), 
 						highlight_function = highlight_function, tooltip=folium.features.GeoJsonTooltip(fields=['Nom','Surface'],aliases=['Nom AP : ','Superficie (ha) : '], 
 						style=("background-color: white; color: #333333; font-family:arial; font-size: 12px; padding: 10px;")),
 						style_function=lambda x:{'fillColor': '#3498DB', 'color': '#3498DB', 'fillOpacity':0.1, 'weight':1}).add_to(carte)
+
+			
+
 
 					# Recherche de données dans la carte
 					fcsearch = Search(
@@ -481,7 +492,13 @@ def main():
 					# add tiles to map
 					#folium.raster_layers.TileLayer('Open Street Map', name="OSM").add_to(carte)
 					folium.raster_layers.TileLayer(tiles="http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", subdomains=["mt0", "mt1", "mt2", "mt3"], 
-													attr="google", name="google maps", control=True).add_to(carte)
+													attr="google", name="google imagerie", control=True).add_to(carte)
+
+					folium.raster_layers.TileLayer('Stamen Terrain', name="Topographie").add_to(carte)
+
+
+					folium.raster_layers.TileLayer(tiles="http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", 
+								attr="google", name="Aucun fond", control=True).add_to(carte)
 
 					#folium.raster_layers.WmsTileLayer(
 					#    url="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
@@ -497,7 +514,7 @@ def main():
 					#folium.raster_layers.TileLayer(tiles="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", subdomains=["mt0", "mt1", "mt2", "mt3"], 
 													#attr="Weather data © 2012 IEM Nexrad", name="Weather", control=True).add_to(carte)
 
-					folium.raster_layers.TileLayer('Stamen Terrain', name="Topographie").add_to(carte)
+
 
 					#Ajouter mini-carte
 					mini_carte = plugins.MiniMap(toggle_display=True)
@@ -508,10 +525,10 @@ def main():
 
 
 					# add layer control to show different maps
-					folium.LayerControl().add_to(carte) 
+					folium.LayerControl(autoZIndex=True).add_to(carte) 
 
 					#MESURE SUR LA CARTE
-					carte.add_child(MeasureControl(position='topright', primary_area_unit='hectares', secondary_area_unit='sqmeters', primary_length_unit='kilometers', secondary_length_unit='meters',))
+					carte.add_child(MeasureControl(position='bottomleft', primary_area_unit='hectares', secondary_area_unit='sqmeters', primary_length_unit='kilometers', secondary_length_unit='meters',))
 					
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=700)
@@ -536,7 +553,7 @@ def main():
 					#CARTE DE CHALEUR
 					heat_data = [[row.loc['latitude'], row.loc['longitude']] for index, row in df.iterrows()]
 
-					HeatMap(heat_data, name="Carte de chaleur").add_to(carte)
+					HeatMap(heat_data, name="Carte de chaleur", radius=30).add_to(carte)
 
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
