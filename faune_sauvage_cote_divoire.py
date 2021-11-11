@@ -41,7 +41,7 @@ def main():
 
 
 
-
+		
 		df = pd.read_excel(io='conflit_faune.xlsx',
 							                    sheet_name='DATA',
 							                    usecols='A:I',
@@ -73,8 +73,8 @@ def main():
 								""")
 							
 							col2.markdown("""
-								* ** Source de données: Directions Régionales des Eaux et Forêts.**
-								* ** Traitement de données: Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
+								* ** Source de données : Directions Régionales des Eaux et Forêts.**
+								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
 								""")
 
 							st.markdown("""---""")
@@ -105,7 +105,7 @@ def main():
 							col12.image("epervier.png", use_column_width=False, width=80, caption = 'Epervier')
 
 
-							st.markdown("""---""")
+							#st.markdown("""---""")
 							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
 
 							
@@ -121,10 +121,10 @@ def main():
 							                    sheet_name='DATA',
 							                    usecols='A:I',
 							                    header=1)
-							st.dataframe(data=df, height=700)
-				
-
-							st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF' )
+							
+							with st.expander("Cliquer ici pour afficher la liste"):
+									st.dataframe(data=df, height=700)
+									st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF' )
 
 							
 							
@@ -154,7 +154,7 @@ def main():
 									
 							df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
 							
-							st.markdown("""---""")
+							#st.markdown("""---""")
 							st.subheader("Resultat de la recherche ci-dessous")
 							st.dataframe(df_selection)
 							st.sidebar.text(f'voir le resultat ci-dessous')
