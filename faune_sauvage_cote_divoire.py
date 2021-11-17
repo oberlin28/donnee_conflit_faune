@@ -11,7 +11,7 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
-#from gsheetsdb import connect
+from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
 import time
@@ -46,18 +46,18 @@ def main():
 							                    usecols='A:I',
 							                    header=1)
 
-		# Create a connection object.
+		#Create a connection object.
 		#conn = connect()
 		#def run_query(query):
 		#    rows = conn.execute(query, headers=1)
 		#    return rows
-
 		#sheet_url = st.secrets["public_gsheets_url"]
-		#rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
-		#st.dataframe(rows, height=700)
+		#rows = run_query(f'SELECT * FROM "{sheet_url}"')
+		#st.dataframe(rows, height=100)
 
+		
 		#for row in rows:
-		#	st.write(f"{row.localite} {row.conflit} {int(row.annee)}")
+		#	pd.DataFrame(f"{row.localite} {row.conflit} {int(row.annee)}")
 		#	pd.
 				
 		if choix == "Données":
@@ -140,18 +140,18 @@ def main():
 									    #default="HOMME-ELEPHANTS"
 									
 
-							localite = st.sidebar.multiselect(
-									    "Choisir localité:",
-									    options=df["localite"].unique())
+							#localite = st.sidebar.multiselect(
+									    #"Choisir localité:",
+									   # options=df["localite"].unique())
 									    #default="ABIDJAN"
 									
 
 							annee = st.sidebar.multiselect(
 									    "Choisir année:",
-									    options=df["annee"].unique())
-									    #default=2021
+									    options=df["annee"].unique(),
+									    default=[2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011])
 									
-							df_selection = df.query("conflit == @conflit & localite == @localite & annee == @annee")
+							df_selection = df.query("conflit == @conflit & annee == @annee") #& localite == @localite
 							
 							#st.markdown("""---""")
 							st.subheader("Resultat de la recherche ci-dessous")
