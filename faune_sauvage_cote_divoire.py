@@ -62,7 +62,7 @@ def main():
 				
 		if choix == "Données":
 
-							st.sidebar.subheader('REQUÊTE OU RECHERCHE')
+							st.sidebar.subheader('FILTRE OU RECHERCHE')
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col1.image("minef.png", width=80)
@@ -153,8 +153,8 @@ def main():
 									
 							df_selection = df.query("conflit == @conflit & annee == @annee") #& localite == @localite
 							
-							#st.markdown("""---""")
-							st.subheader("Resultat de la recherche ci-dessous")
+							st.markdown("""---""")
+							st.subheader("Resultat du filtre ci-dessous")
 							st.dataframe(df_selection)
 							st.sidebar.text(f'voir le resultat ci-dessous')
 				
