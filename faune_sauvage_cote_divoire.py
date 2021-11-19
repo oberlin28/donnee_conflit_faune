@@ -1,5 +1,5 @@
 import pandas as pd
-#import streamlit as st
+import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
 import folium
@@ -52,7 +52,8 @@ def main():
 		#    rows = conn.execute(query, headers=1)
 		#    return rows
 		#sheet_url = st.secrets["public_gsheets_url"]
-		#rows = run_query(f'SELECT * FROM "{sheet_url}"')
+		#rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
+		#rows['annee'] = rows['annee'].astype(int)
 		#st.dataframe(rows, height=100)
 
 		
@@ -231,6 +232,17 @@ def main():
 												y='Effectif',
 												text='Effectif')
 							st.plotly_chart(graphique)
+       
+							
+       						#st.subheader('Effectif total par type de conflits')
+							#voir4 = px.df.groupby("conflit").count()["Victimes"].sum()				
+							#st.markdown('__Effectif des victimes par conflits__')
+							#graphique2 = px.bar(voir4,
+							#	x='Victimes',
+							#	y='Victimes',
+							#	#text='Effectif'
+        									#	)
+							#st.plotly_chart(graphique2)
 
 
 
