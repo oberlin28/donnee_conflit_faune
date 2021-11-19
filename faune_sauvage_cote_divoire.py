@@ -334,13 +334,16 @@ def main():
 					#markerCluster_epervier = MarkerCluster(name='homme-Epervier').add_to(carte)
 					#df_elephant = df_elephant[['latitude'].notnull() & ['longitude'].notnull()]
 					#df_elephant = list(df_elephant[['latitude', 'longitude']].values)
+
 					for (index, row) in df_elephant.iterrows():
 						icon_elephant = folium.features.CustomIcon('./elephant2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_elephant,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 					#BUFFLES UNIQUEMENT DANS LA CARTE
@@ -348,22 +351,26 @@ def main():
 
 					for (index, row) in df_buffle.iterrows():
 						icon_buffle = folium.features.CustomIcon('./Buffle3.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_buffle,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#CHAUVE-SOURIS UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_chauvesouris.iterrows():
 						icon_chauve = folium.features.CustomIcon('./chauve-souris2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_chauve,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
@@ -371,66 +378,78 @@ def main():
 					#CHIMPANZES UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_chimpanze.iterrows():
 						icon_chimpanze = folium.features.CustomIcon('./chimpanzé2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_chimpanze,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#rhinoceros UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_rhinoceros.iterrows():
 						icon_rhino = folium.features.CustomIcon('./rhinoceros2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_rhino,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#Hippopotame UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_hippopotame.iterrows():
 						icon_hippo = folium.features.CustomIcon('./hippopotamus2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_hippo,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#Leopard UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_leopard.iterrows():
 						icon_leopard = folium.features.CustomIcon('./leopard2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_leopard,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#crocodile UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_crocodile.iterrows():
 						icon_crocodile = folium.features.CustomIcon('./crocodile2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_crocodile,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#singe UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_singe.iterrows():
 						icon_singe = folium.features.CustomIcon('./singe2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_singe,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
@@ -438,11 +457,13 @@ def main():
 					#epervier UNIQUEMENT DANS LA CARTE
 					for (index, row) in df_epervier.iterrows():
 						icon_epervier = folium.features.CustomIcon('./epervier2.png', icon_size=(30,30))
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_epervier,  
-							popup = '<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>',
+							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
