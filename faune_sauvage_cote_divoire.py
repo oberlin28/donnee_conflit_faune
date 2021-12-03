@@ -11,7 +11,7 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
-#from gsheetsdb import connect
+from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
 import time
@@ -47,19 +47,30 @@ def main():
 							                    header=1)
 
 		#Create a connection object.
-		#conn = connect()
-		#def run_query(query):
-		#    rows = conn.execute(query, headers=1)
-		#    return rows
-		#sheet_url = st.secrets["public_gsheets_url"]
-		#rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
+		conn = connect()
+		def run_query(query):
+		    rows = conn.execute(query, headers=1)
+		    return rows
+		sheet_url = st.secrets["public_gsheets_url"]
+		rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
 		#rows['annee'] = rows['annee'].astype(int)
-		#st.dataframe(rows, height=100)
+		st.dataframe(rows, height=100)
 
-		
 		#for row in rows:
-		#	pd.DataFrame(f"{row.localite} {row.conflit} {int(row.annee)}")
-		#	pd.
+			#localites=[(row.localite, row.conflit)]
+			#conflits=row.conflit
+			#annees=int(row.annee)
+			#mm=[(localites, conflits, annees)]
+			#pp=pd.DataFrame(localites)
+			#st.dataframe(localites, height=500)
+			
+			#op=(f"{row.localite} {row.conflit} {int(row.annee)}")
+			#st.write(op)
+   
+		#mylist=['localite', 'conflit']
+		#dg=pd.DataFrame(mylist)
+		#print(dg)
+			#st.dataframe(op)
 				
 		if choix == "Données":
 
@@ -340,7 +351,7 @@ def main():
 						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
 							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
 							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
-						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
+						popup = folium.Popup(iframe, min_width=300, max_width=300)
 						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
 							icon = icon_elephant,  
 							popup = popup,
