@@ -22,7 +22,7 @@ import pickle
 #from sklearn.model_selection import train_test_split
 
 
-st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
+st.set_page_config(page_title='App.Conflits-df_conflitRC/MINEF', 
 							 layout="wide",
 						     initial_sidebar_state="expanded",
 						     page_icon='minef.png')
@@ -42,14 +42,11 @@ def main():
 			#st.markdown('https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare', unsafe_allow_html=True)
 
 		
-
-		
-
-
-		df = pd.read_excel(io='conflit_faune.xlsx',
-							                    sheet_name='DATA',
-							                    usecols='A:I',
-							                    header=1)
+									
+		#df_conflit = pd.read_excel(io='conflit_faune.xlsx',
+							                    #sheet_name='DATA',
+							                    #usecols='A:I',
+							                    #header=1)
 
 		#Create a connection object.
 		#conn = connect()
@@ -80,6 +77,12 @@ def main():
 		#dg=pd.DataFrame(mylist)
 		#print(dg)
 			#st.dataframe(op)
+		df_conflit = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
+                    sheet_name='DONNEES',
+                    usecols='A:N',
+                    header=0,
+                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
+							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
 				
 		if choix == "Données":
 
@@ -94,7 +97,7 @@ def main():
 							
 							col2.markdown("""
 								* ** Source de données : Directions Régionales des Eaux et Forêts.**
-								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
+								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (df_conflitRC)**
 								""")
 
 							st.markdown("""---""")
@@ -137,57 +140,49 @@ def main():
 
 							### --- CHARGER DONNEES EXCEL ET LES METTRE DANS UN DATAFRAME
 
-							df = pd.read_excel(io='conflit_faune.xlsx',
-							                    sheet_name='DATA',
-							                    usecols='A:I',
-							                    header=1)
-							
 							with st.expander("Cliquer ici pour afficher la liste"):
-									st.dataframe(data=df, height=700)
-									st.download_button(label='Telecharger données', data='df', file_name='donnees_CHF' )
+								st.dataframe(data=df_conflit, height=700)
+								st.download_button(label='Telecharger données', data='df_conflit_conflit', file_name='donnees_CHF' )
 
 							
 							
 							#REQUETE SUR LE TABLEUR
 
-							#df_statistique = pd.read_excel(
+							#df_conflit_statistique = pd.read_excel(
 												#io='conflit_faune.xlsx',
 							                    #sheet_name='DATA',
 							                    #usecols='K:O',
 							                    #header=1)
 
 							conflit = st.sidebar.multiselect("Choisir conflit:",
-									    options=df["conflit"].unique())
+									    options=df_conflit["Typologie"].unique())
 									    #default="HOMME-ELEPHANTS"
 									
 
 							#localite = st.sidebar.multiselect(
 									    #"Choisir localité:",
-									   # options=df["localite"].unique())
+									   # options=df_conflit["localite"].unique())
 									    #default="ABIDJAN"
 									
 
 							annee = st.sidebar.multiselect(
 									    "Choisir année:",
-									    options=df["annee"].unique(),
+									    options=df_conflit["Année"].unique(),
 									    default=[2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011])
 									
-							df_selection = df.query("conflit == @conflit & annee == @annee") #& localite == @localite
+							df_conflit_selection = df_conflit.query("Typologie == @conflit & Année == @annee") #& localite == @localite
 							
 							st.markdown("""---""")
 							st.subheader("Resultat du filtre ci-dessous")
-							st.dataframe(df_selection)
+							st.dataframe(df_conflit_selection)
 							st.sidebar.text(f'voir le resultat ci-dessous')
 				
 		elif choix == "Diagramme":
-							st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
+							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
 							#st.components.htmlst.markdownunsafe_allow_html=True
-							df = pd.read_excel(io='conflit_faune.xlsx',
-							                    sheet_name='DATA',
-							                    usecols='A:I',
-							                    header=1)
-							#st.dataframe(data=df, height=600)
+
+							#st.dataframe(data=df_conflit, height=600)
 							#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
 
 							st.subheader("Rprésentation graphique des données")
@@ -196,28 +191,37 @@ def main():
 							#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 							left_column, right_column = st.columns(2)
 							#st.subheader('Effectif total par type de conflits')
-							pie_chart_complet = pd.DataFrame(df['conflit'].value_counts())					
+							pie_chart_complet = pd.DataFrame(df_conflit['Typologie'].value_counts())					
 							left_column.markdown('__Effectif total par conflits__')
 							left_column.bar_chart(pie_chart_complet, use_container_width=True)
 
 							
 							posi1, posi2 = st.columns(2)
-							voir = df.groupby("conflit")["Blesses"].sum()
+							voir = df_conflit.groupby("Typologie")["Blessé"].sum()
 							posi1.markdown('__Effectif des blèssés par conflit__')
 							posi1.bar_chart(voir)
 
-							voir2 = df.groupby("conflit")["Morts"].sum()
+							voir2 = df_conflit.groupby("Typologie")["Mort"].sum()
 							posi2.markdown('__Effectif des morts par conflit__')
 							posi2.bar_chart(voir2)
 
-							#voir3 = df["conflit", "annee"]("HOMME-ELEPHANTS")
+
+							voir3 = df_conflit.groupby("Typologie")["Autres victimes culture et matériel"].sum()
+							st.markdown('__Effectif des victimes par conflit__')
+							st.bar_chart(voir3)
+
+							pie_chart_foyer = pd.DataFrame(df_conflit['Département'].value_counts())
+							st.markdown('__Effectif par foyer de conflit__')
+							st.bar_chart(pie_chart_foyer, use_container_width=True)
+
+							#voir3 = df_conflit["conflit", "annee"]("HOMME-ELEPHANTS")
 							#st.dataframe(voir3)
 
 
 
 
 							#st.subheader('Nombre de conflit par année')
-							annee_diagramme = pd.DataFrame(df['annee'].value_counts())
+							annee_diagramme = pd.DataFrame(df_conflit['Année'].value_counts())
 							right_column.markdown('__Nombre de conflit par année__')
 							right_column.bar_chart(annee_diagramme, use_container_width=True)
 
@@ -228,36 +232,36 @@ def main():
 							
 
 							#AJOUT DES DONNEES DU FILTRE
-							annee_var = df['annee'].unique().tolist()
+							annee_var = df_conflit['Année'].unique().tolist()
 							annee_selection = st.sidebar.multiselect('Annee de conflit :', annee_var, default=2020)
 
-							conflit_var = df['conflit'].unique().tolist()
+							conflit_var = df_conflit['Typologie'].unique().tolist()
 							conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
 
 							
 							## FILTRE DE DONNEES PAR CONFLIT
 
-							mask = (df['annee'].isin(annee_selection)) & (df['conflit'].isin(conflit_selection))
-							number_of_result = df[mask].shape[0]
+							mask = (df_conflit['Année'].isin(annee_selection)) & (df_conflit['Typologie'].isin(conflit_selection))
+							number_of_result = df_conflit[mask].shape[0]
 							st.sidebar.markdown(f'*Resultat disponible:{number_of_result}*')
 
 							## GROUPER BLOC DE DONNEES APRES SELECTION
-							df_grouper = df[mask].groupby(by=['conflit']).count()[['annee']]
-							df_grouper = df_grouper.rename(columns = {'annee':'Effectif'})
-							df_grouper = df_grouper.reset_index()
+							df_conflit_grouper = df_conflit[mask].groupby(by=['Typologie']).count()[['Année']]
+							df_conflit_grouper = df_conflit_grouper.rename(columns = {'Année':'Effectif'})
+							df_conflit_grouper = df_conflit_grouper.reset_index()
 
 							
 							## AFFICHE LE DIAGRAMME DU FILTRE 
 							st.markdown("__Diagramme en Bande des données filtrées__")
-							graphique = px.bar(df_grouper,
-												x='conflit',
+							graphique = px.bar(df_conflit_grouper,
+												x='Typologie',
 												y='Effectif',
 												text='Effectif')
 							st.plotly_chart(graphique)
        
 							
        						#st.subheader('Effectif total par type de conflits')
-							#voir4 = px.df.groupby("conflit").count()["Victimes"].sum()				
+							#voir4 = px.df_conflit.groupby("conflit").count()["Victimes"].sum()				
 							#st.markdown('__Effectif des victimes par conflits__')
 							#graphique2 = px.bar(voir4,
 							#	x='Victimes',
@@ -270,7 +274,7 @@ def main():
 
 		elif choix == "Carte":
 
-			page_nom = ["Carte de conflits", "Carte de charleur" ]
+			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
 
 
@@ -283,34 +287,30 @@ def main():
 						#time.sleep(0.05)
 						#my_bar.progress(percent_complete + 1)
 
-					#df1 = pd.read_csv("clean_data_sample.csv")
-					#st.dataframe(df1)
+					#df_conflit1 = pd.read_csv("clean_data_sample.csv")
+					#st.dataframe(df_conflit1)
 					#st.header("CARTOGRAPHIE DES TYPES DE CONFLITS DE 2011 A 2021 ")
 					
-					df = pd.read_excel(io='conflit_faune.xlsx',
-									                    sheet_name='DATA',
-									                    usecols='A:I',
-									                    header=1)
-					#df = df[['latitude'].notnull() & ['longitude'].notnull()]
+					#df_conflit = df_conflit[['Latitude'].notnull() & ['Longitude'].notnull()]
 
-					df_elephant = pd.DataFrame(df[df["conflit"] == "HOMME-ELEPHANT"])
-					df_buffle = pd.DataFrame(df[df["conflit"] == "HOMME-BUFFLE"])
-					df_chauvesouris = pd.DataFrame(df[df["conflit"] == "HOMME-CHAUVE-SOURIS"])
-					df_chimpanze = pd.DataFrame(df[df["conflit"] == "HOMME-CHIMPANZE"])
-					df_rhinoceros = pd.DataFrame(df[df["conflit"] == "HOMME-RHINOCEROS"])
-					df_hippopotame = pd.DataFrame(df[df["conflit"] == "HOMME-HIPPOPOTAME"])
-					df_leopard = pd.DataFrame(df[df["conflit"] == "HOMME-LEOPARD"])
-					df_crocodile = pd.DataFrame(df[df["conflit"] == "HOMME-CROCODILE"])
-					df_singe = pd.DataFrame(df[df["conflit"] == "HOMME-SINGE"])
-					df_epervier = pd.DataFrame(df[df["conflit"] == "HOMME-EPERVIER"])
+					df_conflit_elephant = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-ELEPHANT"])
+					df_conflit_buffle = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-BUFFLE"])
+					df_conflit_chauvesouris = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-CHAUVE-SOURIS"])
+					df_conflit_chimpanze = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-CHIMPANZE"])
+					df_conflit_rhinoceros = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-RHINOCEROS"])
+					df_conflit_hippopotame = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-HIPPOPOTAME"])
+					df_conflit_leopard = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-LEOPARD"])
+					df_conflit_crocodile = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-CROCODILE"])
+					df_conflit_singe = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-SINGE"])
+					df_conflit_epervier = pd.DataFrame(df_conflit[df_conflit["Typologie"] == "HOMME-EPERVIER"])
 
-					#ip = df[["latitude", "longitude", "conflit"]]
+					#ip = df_conflit[["Latitude", "Longitude", "conflit"]]
 					
-					#op = df.set_index("latitude")#[("latitude", "conflit")]
+					#op = df_conflit.set_index("Latitude")#[("Latitude", "conflit")]
 					#st.dataframe(ip)
-					#coord = pd.DataFrame(df)
+					#coord = pd.DataFrame(df_conflit)
 					#st.dataframe(coord)
-					#****fichier = pd.DataFrame(coord, columns=['latitude', 'longitude'])
+					#****fichier = pd.DataFrame(coord, columns=['Latitude', 'Longitude'])
 					#*****st.map(fichier)
 
 					# VARIABLE POUR AFFICHER LA CARTE
@@ -332,15 +332,15 @@ def main():
 					
 					draw.add_to(carte)
 					#INSERER LES DONNEES LAT LONG DANS LA CARTE
-					#for (index, row) in df.iterrows():
-					#for (i, row) in df.iterrows():
-						#lat = df.at[i, 'latitude']
-						#lng = df.at[i, 'longitude']
-						#info = df.at[i, 'conflit']
+					#for (index, row) in df_conflit.iterrows():
+					#for (i, row) in df_conflit.iterrows():
+						#lat = df_conflit.at[i, 'Latitude']
+						#lng = df_conflit.at[i, 'Longitude']
+						#info = df_conflit.at[i, 'conflit']
 
-						#popup = '<b>'+'<br>'+ "INFORMATION" + '</br>'+'</b>' + '<b>'+'<br>'+ "Conflit : "+'</b>'+ df.at[i, 'conflit'] +
-						#'<b>'+'<br>'+ "Localité : "+'</b>'+ df.at[i, 'localite'] +
-						#'<b>'+'<br>'+ "Annee : "+'</b>'+ df.at[i, 'annee']
+						#popup = '<b>'+'<br>'+ "INFORMATION" + '</br>'+'</b>' + '<b>'+'<br>'+ "Conflit : "+'</b>'+ df_conflit.at[i, 'conflit'] +
+						#'<b>'+'<br>'+ "Localité : "+'</b>'+ df_conflit.at[i, 'localite'] +
+						#'<b>'+'<br>'+ "Annee : "+'</b>'+ df_conflit.at[i, 'annee']
 						#folium.Marker(location=[lat, lng], popup=)
 
 					#CREATION D'UN CLUSTER
@@ -354,16 +354,16 @@ def main():
 					#markerCluster_crocodile = MarkerCluster(name='homme-Crocodile').add_to(carte)
 					#markerCluster_singe = MarkerCluster(name='homme-Singe').add_to(carte)
 					#markerCluster_epervier = MarkerCluster(name='homme-Epervier').add_to(carte)
-					#df_elephant = df_elephant[['latitude'].notnull() & ['longitude'].notnull()]
-					#df_elephant = list(df_elephant[['latitude', 'longitude']].values)
+					#df_conflit_elephant = df_conflit_elephant[['Latitude'].notnull() & ['Longitude'].notnull()]
+					#df_conflit_elephant = list(df_conflit_elephant[['Latitude', 'Longitude']].values)
 
-					for (index, row) in df_elephant.iterrows():
+					for (index, row) in df_conflit_elephant.iterrows():
 						icon_elephant = folium.features.CustomIcon('./elephant2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_elephant,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
@@ -371,26 +371,26 @@ def main():
 					#BUFFLES UNIQUEMENT DANS LA CARTE
 					#icon_buffle = folium.features.CustomIcon('Buffle.png', icon_size=(100,100))
 
-					for (index, row) in df_buffle.iterrows():
+					for (index, row) in df_conflit_buffle.iterrows():
 						icon_buffle = folium.features.CustomIcon('./Buffle3.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_buffle,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#CHAUVE-SOURIS UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_chauvesouris.iterrows():
+					for (index, row) in df_conflit_chauvesouris.iterrows():
 						icon_chauve = folium.features.CustomIcon('./chauve-souris2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_chauve,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
@@ -398,78 +398,78 @@ def main():
 
 
 					#CHIMPANZES UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_chimpanze.iterrows():
+					for (index, row) in df_conflit_chimpanze.iterrows():
 						icon_chimpanze = folium.features.CustomIcon('./chimpanzé2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_chimpanze,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#rhinoceros UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_rhinoceros.iterrows():
+					for (index, row) in df_conflit_rhinoceros.iterrows():
 						icon_rhino = folium.features.CustomIcon('./rhinoceros2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_rhino,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#Hippopotame UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_hippopotame.iterrows():
+					for (index, row) in df_conflit_hippopotame.iterrows():
 						icon_hippo = folium.features.CustomIcon('./hippopotamus2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_hippo,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#Leopard UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_leopard.iterrows():
+					for (index, row) in df_conflit_leopard.iterrows():
 						icon_leopard = folium.features.CustomIcon('./leopard2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_leopard,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#crocodile UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_crocodile.iterrows():
+					for (index, row) in df_conflit_crocodile.iterrows():
 						icon_crocodile = folium.features.CustomIcon('./crocodile2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_crocodile,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
 
 
 					#singe UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_singe.iterrows():
+					for (index, row) in df_conflit_singe.iterrows():
 						icon_singe = folium.features.CustomIcon('./singe2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_singe,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
@@ -477,13 +477,13 @@ def main():
 
 
 					#epervier UNIQUEMENT DANS LA CARTE
-					for (index, row) in df_epervier.iterrows():
+					for (index, row) in df_conflit_epervier.iterrows():
 						icon_epervier = folium.features.CustomIcon('./epervier2.png', icon_size=(30,30))
-						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["conflit"] 
-							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["localite"]+'</br>' + '<b>'+'<br>' 
-							+ "Année : "+'</b>'+ str(row.loc["annee"])+'</br>')
+						iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+							+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+							+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
 						popup = folium.Popup(iframe, min_width=300, max_width=300, min_hight=300, max_hight=300)
-						folium.Marker(location=[row.loc["latitude"], row.loc["longitude"]],
+						folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
 							icon = icon_epervier,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
@@ -588,27 +588,23 @@ def main():
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=700)
 
-			if page == "Carte de charleur":
+			if page == "Carte de chaleur":
 
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True) 
 					
-					df = pd.read_excel(io='conflit_faune.xlsx',
-									                    sheet_name='DATA',
-									                    usecols='A:I',
-									                    header=1)
 					
-					#st.dataframe(data=df, height=700)
+					#st.dataframe(data=df_conflit, height=700)
 
-					#df['latitude'] = df['latitude'].astype(float)
-					#df['longitude'] = df['longitude'].astype(float)
+					#df_conflit['Latitude'] = df_conflit['Latitude'].astype(float)
+					#df_conflit['Longitude'] = df_conflit['Longitude'].astype(float)
 
-					#df = df[['latitude', 'longitude']]
-					#df = df.dropna(axis=0, subset=['latitude','longitude'])
+					#df_conflit = df_conflit[['Latitude', 'Longitude']]
+					#df_conflit = df_conflit.dropna(axis=0, subset=['Latitude','Longitude'])
 
 					#CARTE DE CHALEUR
-					heat_data = [[row.loc['latitude'], row.loc['longitude']] for index, row in df.iterrows()]
+					heat_data = [[row.loc['Latitude'], row.loc['Longitude']] for index, row in df_conflit.iterrows()]
 
-					HeatMap(heat_data, name="Carte de chaleur", radius=30).add_to(carte)
+					HeatMap(heat_data, name="Carte de chaleur", radius=20).add_to(carte)
 
 
 					#AJOUTE PLEIN ECRAN A LA CARTE
