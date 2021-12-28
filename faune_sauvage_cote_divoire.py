@@ -11,12 +11,15 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
-from gsheetsdb import connect
+#from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
 import time
 from pathlib import Path 
 import base64
+import pickle
+#from sklearn.linear_model import LogisticRegression
+#from sklearn.model_selection import train_test_split
 
 
 st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
@@ -34,11 +37,13 @@ def main():
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
 		menu = ["Données", "Diagramme", "Carte"]
 		choix = st.sidebar.selectbox("Données * Diagramme * Carte", menu)
-
+		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
+		#if option=='POWERBI':
+			#st.markdown('https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare', unsafe_allow_html=True)
 
 		
 
-
+		
 
 
 		df = pd.read_excel(io='conflit_faune.xlsx',
@@ -47,14 +52,18 @@ def main():
 							                    header=1)
 
 		#Create a connection object.
-		conn = connect()
-		def run_query(query):
-		    rows = conn.execute(query, headers=1)
-		    return rows
-		sheet_url = st.secrets["public_gsheets_url"]
-		rows = run_query(f'SELECT localite, conflit, annee, degat, Blesses, Morts, Victimes, latitude, longitude FROM "{sheet_url}"')
+		#conn = connect()
+		#def run_query(query):
+		 #   rows = conn.execute(query, headers=1)
+		 #   return rows
+		#sheet_url = st.secrets["public_gsheets_url"]
+		#rows = run_query(f'SELECT * FROM "{sheet_url}"')
+		#data = rows.fetchall()
+		#res = pd.DataFrame.from_dict(data) # Converting to dataframe
+		#res = res.astype({"annee":int, "Morts":int, "Blesses":int, "Victimes":int})  # Now you can manipulate easily the DATFRAME
+		#st.write(res)
 		#rows['annee'] = rows['annee'].astype(int)
-		st.dataframe(rows, height=100)
+		#st.dataframe(rows, height=100)
 
 		#for row in rows:
 			#localites=[(row.localite, row.conflit)]
@@ -171,7 +180,9 @@ def main():
 							st.sidebar.text(f'voir le resultat ci-dessous')
 				
 		elif choix == "Diagramme":
-
+							st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
+							#st.components.html
+							#st.components.htmlst.markdownunsafe_allow_html=True
 							df = pd.read_excel(io='conflit_faune.xlsx',
 							                    sheet_name='DATA',
 							                    usecols='A:I',
