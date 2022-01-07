@@ -113,7 +113,7 @@ def main():
 							
 							col2.markdown("""
 								* ** Source de données : Directions Régionales des Eaux et Forêts.**
-								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (df_conflitRC)**
+								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
 								""")
 
 							st.markdown("""---""")
