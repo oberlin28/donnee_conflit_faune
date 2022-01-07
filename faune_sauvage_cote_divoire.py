@@ -224,8 +224,10 @@ def main():
 							
 							with st.expander("Cliquer ici pour autres informations"):
 									deroulant_1, deroulant_2 = st.columns(2)
+									valeur_foyer = df_conflit.groupby(by=['Département'], as_index=False)['Typologie'].count()
 									deroulant_1.markdown("__Nombre de conflit par foyer (Département)__")
-									deroulant_1.dataframe(valeur_foyer.rename(columns={'Département': 'Nombre de conflit'}), height=400, width=500)
+									deroulant_1.dataframe(valeur_foyer.rename(columns={'Typologie': 'Nombre de conflit'}))
+									#deroulant_1.dataframe(valeur_foyer.rename(columns={'Département': 'Nombre de conflit'}), height=400, width=500)
 									deroulant_2.markdown("__Effectif et pourcentage par type de conflit (Localité)__")
 									deroulant_2.dataframe(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent': 'Pourcentage estimé'}), height=500)
 
