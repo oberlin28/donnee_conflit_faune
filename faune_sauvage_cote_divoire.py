@@ -197,10 +197,11 @@ def main():
 							px.set_mapbox_access_token("pk.eyJ1IjoiZnJlZGVyaWNkZWJlcmxpbiIsImEiOiJja3kxbnpwM2kwOGZ3MnZsamZ0aW14OG00In0.SGkMtaVK5Paq0SjH4zJ3sg")
 							fig = px.scatter_mapbox(df_conflit, lat="Latitude", lon="Longitude",color="Typologie", center={"lat": 7.3056, "lon": -5.3888},
 							                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=20,zoom=5, title = 'Most trafficked US airports<br>(Hover for airport names)')
+							st.write(fig)
 							#fig.update_layout(
 						        #title = 'Most trafficked US airports<br>(Hover for airport names)',
 						        #geo_scope='africa')
-							st.write(fig)
+							
 
 							#table_1, table_2, table_3 = st.columns(3)
 							
