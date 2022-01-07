@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import matplotlib.pyplot as plt
+import numpy as np
 import folium
 from folium import plugins
 from streamlit_folium import folium_static 
@@ -22,7 +23,7 @@ import pickle
 #from sklearn.model_selection import train_test_split
 
 
-st.set_page_config(page_title='App.Conflits-df_conflitRC/MINEF', 
+st.set_page_config(page_title='App.Conflits-DFRC/MINEF', 
 							 layout="wide",
 						     initial_sidebar_state="expanded",
 						     page_icon='minef.png')
@@ -83,10 +84,25 @@ def main():
                     header=0,
                     converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
-				
+		
+		#df_mort = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
+                    #sheet_name='STATISTIQUE_STREAMLIT',
+                    #usecols='A:B',
+                    #header=0,
+                    #converters={'NombreMort':int})	
+
+
+		df_blesses = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
+                    sheet_name='STATISTIQUE_STREAMLIT',
+                    usecols='J:L',
+                    header=0,
+                    converters={'NombreBlessé':int})
+		#st.write(df_blesses)
+
+
 		if choix == "Données":
 
-							st.sidebar.subheader('FILTRE OU RECHERCHE')
+							#st.sidebar.subheader('FILTRE OU RECHERCHE')
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col1.image("minef.png", width=80)
@@ -102,34 +118,152 @@ def main():
 
 							st.markdown("""---""")
 							st.subheader("Typologie des conflits")
+
+							valeur = pd.DataFrame(df_conflit['Typologie'].value_counts())
+
 							
+
+							valeur['percent'] = (valeur['Typologie'] / valeur['Typologie'].sum()) * 100
+							valeur['percent']=valeur['percent'].apply(lambda x:round(x,2))
+							#st.write(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent':'Pourcentage'}))
 							
+							txt = "Pourcentage estimé: {:.0F} %"
+
 							col3, col4, col5, col6, col7 = st.columns(5)
 							with col3 :
-								st.image("elephant.png", use_column_width=False, width=80, caption = 'Eléphant')
+								st.image("elephant.png", use_column_width=False, width=80) #caption = 'Eléphant')
+								oi1=valeur['percent'].values[0]
+								st.write(txt.format(oi1))
+								st.write()
+								#st.write(oi)
 							
 							with col4 :
-								st.image("Buffle.png", use_column_width=False, width=80, caption = 'Buffle')
+								st.image("Buffle.png", use_column_width=False, width=80) #caption = 'Buffle')
+								oi2=valeur['percent'].values[1]
+								st.write(txt.format(oi2))
 
 							with col5 :	
-								st.image("chimpanzé.png", use_column_width=False, width=50, caption = 'Chimpanzé')
+								st.image("chimpanzé.png", use_column_width=False, width=50) #caption = 'Chimpanzé')
+								pp=valeur['percent'].values[3]
+								st.write(txt.format(pp))
 							
 							with col6 :
-								st.image("rhinoceros.png", use_column_width=False, width=80, caption = 'Rhinoceros')
+								st.image("rhinoceros.png", use_column_width=False, width=80) #caption = 'Rhinoceros')
+								pp2=valeur['percent'].values[4]
+								st.write(txt.format(pp2))
 							
 							with col7 :
-								st.image("hippopotamus.png", use_column_width=False, width=80, caption = 'Hippopotame')
+								st.image("hippopotamus.png", use_column_width=False, width=110) #caption = 'Hippopotame')
+								pp3=valeur['percent'].values[2]
+								st.write(txt.format(pp3))
 
 							col8, col9, col10, col11, col12 = st.columns(5)
-							col8.image("leopard.png", use_column_width=False, width=80, caption = 'Léopard')
-							col9.image("crocodile.png", use_column_width=False, width=130, caption = 'Crocrodile')
-							col10.image("singe.png", use_column_width=False, width=70, caption = 'Singe')
-							col11.image("chauve-souris.png", use_column_width=False, width=130, caption = 'Chauve-souris')
-							col12.image("epervier.png", use_column_width=False, width=80, caption = 'Epervier')
+							with col8 :
+								st.image("leopard.png", use_column_width=False, width=80)# caption = 'Léopard')
+								pp4=valeur['percent'].values[7]
+								st.write(txt.format(pp4))
+							
+							with col9 :
+								st.image("crocodile.png", use_column_width=False, width=130)# caption = 'Crocrodile')
+								pp5=valeur['percent'].values[5]
+								st.write(txt.format(pp5))
+							
+							with col10 :
+								st.image("singe.png", use_column_width=False, width=70)# caption = 'Singe')
+								pp6=valeur['percent'].values[6]
+								st.write(txt.format(pp6))
+							
+							with col11 :
+								st.image("chauve-souris.png", use_column_width=False, width=130)# caption = 'Chauve-souris')
+								pp7=valeur['percent'].values[8]
+								st.write(txt.format(pp7))
+							
+							with col12 :
+								st.image("epervier.png", use_column_width=False, width=80)# caption = 'Epervier')
+								pp8=valeur['percent'].values[9]
+								st.write(txt.format(pp8))
+
+							st.markdown("""---""")
+							st.subheader("Statistique des données conflits Homme-Faune")
+							# ---- COMBINER ET GROUPER LES VALEURS EN FONCTION DE LA TYPOLOGIE
+							colonne_calcule = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
+							conflit_groupe = df_conflit.groupby(['Typologie'], as_index = False)[colonne_calcule].sum()
+							st.dataframe(conflit_groupe.rename(columns={'Mort': 'Nombre de personnes mortes', 'Blessé': 'Nombre de personnes blessées'}), height=700)
+							
+
+							Tableau = pd.DataFrame(df_conflit['Typologie'].value_counts())
+							valeur_foyer = pd.DataFrame(df_conflit['Département'].value_counts(dropna=True, normalize=False))
+
+							px.set_mapbox_access_token("pk.eyJ1IjoiZnJlZGVyaWNkZWJlcmxpbiIsImEiOiJja3kxbnpwM2kwOGZ3MnZsamZ0aW14OG00In0.SGkMtaVK5Paq0SjH4zJ3sg")
+							fig = px.scatter_mapbox(df_conflit, lat="Latitude", lon="Longitude",color="Typologie", center={"lat": 7.3056, "lon": -5.3888},
+							                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=20,zoom=5, title = 'Most trafficked US airports<br>(Hover for airport names)')
+							#fig.update_layout(
+						        #title = 'Most trafficked US airports<br>(Hover for airport names)',
+						        #geo_scope='africa')
+							st.write(fig)
+
+							#table_1, table_2, table_3 = st.columns(3)
+							
+
+							#table_3.markdown("__Effectif des conflits en fonction des (localité)__")
+							#table_3.dataframe(Tableau.rename(columns={'Typologie': 'Nombre de conflit'}), height=700)
+
+							#group_mort = df_conflit.groupby("Typologie")["Mort"].sum()
+							#table_1.markdown("__Nombre de mort par conflit__")
+							#table_1.dataframe(group_mort, height=500, width=300)
+
+							#group_blesse = df_conflit.groupby("Typologie")["Blessé"].sum()
+							#table_2.markdown("__Nombre de blessé par conflit__")
+							#table_2.dataframe(group_blesse, height=500, width=300)
+
+							#autre_1, autre_2 = st.columns(2)
+							#group_victime = df_conflit.groupby("Typologie")["Autres victimes culture et matériel"].sum()
+							#autre_1.markdown("__Nombre de victime par conflit__")
+							#autre_1.dataframe(group_victime, height=500, width=500)
+							
+							with st.expander("Cliquer ici pour autres informations"):
+									deroulant_1, deroulant_2 = st.columns(2)
+									deroulant_1.markdown("__Nombre de conflit par foyer (Département)__")
+									deroulant_1.dataframe(valeur_foyer.rename(columns={'Département': 'Nombre de conflit'}), height=400, width=500)
+									deroulant_2.markdown("__Effectif et pourcentage par type de conflit (Localité)__")
+									deroulant_2.dataframe(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent': 'Pourcentage estimé'}), height=500)
+
+
+
+							st.markdown("""---""")
+							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							deroule_1, deroule_2 = st.columns([1.2, 1])
+
+							list_conflit = ['TOUT'] + df_conflit['Typologie'].unique().tolist()
+							s_station = deroule_1.selectbox('Quel conflit voulez-vous afficher ?', list_conflit, key='start_station')
+							#deroule_2.download_button(label='Télécharger fichier', data = 'df_conflit', file_name = 'Donnees_CHF')
+							
+																															
+							#conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
+
+							# you can filter/alter the data based on user input and display the results in a plot
+							st.write('Données filtrées')
+							with open('BD_conflitHommeFaune.xlsx', 'rb') as f:
+								st.download_button(label='Télécharger fichier', data = f)
+							#st.download_button(label='Télécharger fichier', data = 's_station', file_name = 'Donnees_CHF', mime='.xlsx')
+							if s_station != 'TOUT':
+								display_data = df_conflit[df_conflit['Typologie'] == s_station]
+								#mask = (df_conflit['Typologie'].isin(list_conflit))
+								#number_of_result = df_conflit[mask].shape[0]
+								#st.sidebar.markdown(f'*Resultat disponible:{number_of_result}*')
+
+							else:
+								display_data = df_conflit.copy()
+
+
+							# display the dataset in a table format
+							# if you'd like to customize it more, consider plotly tables: https://plotly.com/python/table/
+							# I have a YouTube tutorial that can help you in this: https://youtu.be/CYi0pPWQ1Do
+							st.dataframe(data=display_data, height=800)
 
 
 							#st.markdown("""---""")
-							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							#st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
 
 							
 
@@ -140,9 +274,9 @@ def main():
 
 							### --- CHARGER DONNEES EXCEL ET LES METTRE DANS UN DATAFRAME
 
-							with st.expander("Cliquer ici pour afficher la liste"):
-								st.dataframe(data=df_conflit, height=700)
-								st.download_button(label='Telecharger données', data='df_conflit_conflit', file_name='donnees_CHF' )
+							#with st.expander("Cliquer ici pour afficher la liste"):
+								#st.dataframe(data=df_conflit, height=700)
+								#st.download_button(label='Telecharger données', data='df_conflit_conflit', file_name='donnees_CHF' )
 
 							
 							
@@ -154,8 +288,8 @@ def main():
 							                    #usecols='K:O',
 							                    #header=1)
 
-							conflit = st.sidebar.multiselect("Choisir conflit:",
-									    options=df_conflit["Typologie"].unique())
+							#conflit = st.sidebar.multiselect("Choisir conflit:",
+									    #options=df_conflit["Typologie"].unique())
 									    #default="HOMME-ELEPHANTS"
 									
 
@@ -165,17 +299,17 @@ def main():
 									    #default="ABIDJAN"
 									
 
-							annee = st.sidebar.multiselect(
-									    "Choisir année:",
-									    options=df_conflit["Année"].unique(),
-									    default=[2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011])
+							#annee = st.sidebar.multiselect(
+									    #"Choisir année:",
+									    #options=df_conflit["Année"].unique(),
+									    #default=[2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011])
 									
-							df_conflit_selection = df_conflit.query("Typologie == @conflit & Année == @annee") #& localite == @localite
+							#df_conflit_selection = df_conflit.query("Typologie == @conflit & Année == @annee") #& localite == @localite
 							
-							st.markdown("""---""")
-							st.subheader("Resultat du filtre ci-dessous")
-							st.dataframe(df_conflit_selection)
-							st.sidebar.text(f'voir le resultat ci-dessous')
+							#st.markdown("""---""")
+							#st.subheader("Resultat du filtre ci-dessous")
+							#st.dataframe(df_conflit_selection)
+							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
 		elif choix == "Diagramme":
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
@@ -184,66 +318,138 @@ def main():
 
 							#st.dataframe(data=df_conflit, height=600)
 							#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
-
-							st.subheader("Rprésentation graphique des données")
+							repre_1, repre_2, repre_3 = st.columns([0.7, 1.5, 0.5])
+							repre_2.subheader("REPRESENTATION GRAPHIQUE DES DONNEES")
 							st.markdown("""---""")
 
+							part_typologie, part_annee = st.columns(2)
+							user_type = df_conflit['Typologie'].value_counts().reset_index()
+							user_type.columns = ['Conflit','valeur']
+
+							fig = px.pie(user_type, values='valeur', names = 'Conflit', hover_name='Conflit')
+
+							# TODO: change the values of the update_layout function and see the effect
+							fig.update_layout(showlegend=True,
+								#title='Part de chaque type de conflit',
+								width=500,
+								height=500,
+								margin=dict(l=1,r=1,b=1,t=1),
+								font=dict(color='#FFFFFF', size=12))
+
+							# this function adds labels to the pie chart
+							# for more information on this chart, visit: https://plotly.com/python/pie-charts/
+							fig.update_traces(textposition='inside', textinfo='percent')
+
+							# after creating the chart, we display it on the app's screen using this command
+							part_typologie.markdown('__Part de chaque type de conflit (%)__')
+							part_typologie.write(fig, use_container_width=True)
+
+
+							#st.subheader('Nombre de conflit par année')
+							annee_diagramme = pd.DataFrame(df_conflit['Année'].value_counts())
+							part_annee.markdown('__Evolution des conflits au cours des années__')
+							#part_annee.bar_chart(annee_diagramme, use_container_width=True)
+							#st.write(annee_diagramme)
+
+							anne_group = df_conflit.groupby(by=['Année'], as_index=False)['Typologie'].count()
+							#st.write(anne_group)
+
+							fig_annee = px.line(anne_group, 
+												x='Année', y='Typologie')
+							part_annee.write(fig_annee, use_container_width=True)
+
+							#st.write(annee_diagramme)
 							#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 							left_column, right_column = st.columns(2)
+
+							#st.markdown('__Effectif des morts, des blessés et des victimes par type de conflit__')
+							bar_chart = px.bar(df_blesses,
+												x = 'Typologie conflit',
+												y = 'Nombre',
+												color = 'Attribut',
+												barmode="group",
+												title='Effectif des morts, des blessés et des victimes par type de conflit',
+												hover_name="Typologie conflit",
+												#color_continuous_scale=['red', 'yellow', 'green'],
+												#template='plotly_white',
+												#title='hhhhf')
+												text = 'Nombre')
+							st.plotly_chart(bar_chart, use_container_width=True)
+
+							#st.markdown('__Effectif des blèssés par conflit__')
+							#bar_chart2 = px.bar(df_blesses,
+												#x = 'ConflitBlessé',
+												#y = 'NombreBlessé',
+												#text = 'NombreBlessé')
+							#st.write(bar_chart2)
+
+
+
 							#st.subheader('Effectif total par type de conflits')
-							pie_chart_complet = pd.DataFrame(df_conflit['Typologie'].value_counts())					
-							left_column.markdown('__Effectif total par conflits__')
-							left_column.bar_chart(pie_chart_complet, use_container_width=True)
+							#pie_chart_complet = pd.DataFrame(df_conflit['Typologie'].value_counts())					
+							#left_column.markdown('__Effectif total par conflits__')
+							#right_column.bar_chart(pie_chart_complet, use_container_width=True)
 
 							
 							posi1, posi2 = st.columns(2)
-							voir = df_conflit.groupby("Typologie")["Blessé"].sum()
-							posi1.markdown('__Effectif des blèssés par conflit__')
-							posi1.bar_chart(voir)
+							#voir = df_conflit.groupby("Typologie")["Blessé"].sum()
+							#posi1.markdown('__Effectif des blèssés par conflit__')
+							#posi1.bar_chart(voir)
 
-							voir2 = df_conflit.groupby("Typologie")["Mort"].sum()
-							posi2.markdown('__Effectif des morts par conflit__')
-							posi2.bar_chart(voir2)
+							#voir2 = df_conflit.groupby("Typologie")["Mort"].sum()
+							#posi2.markdown('__Effectif des morts par conflit__')
+							#posi2.bar_chart(voir2)
 
 
-							voir3 = df_conflit.groupby("Typologie")["Autres victimes culture et matériel"].sum()
-							st.markdown('__Effectif des victimes par conflit__')
-							st.bar_chart(voir3)
+							#voir3 = df_conflit.groupby("Typologie")["Autres victimes culture et matériel"].sum()
+							#st.markdown('__Effectif des victimes par conflit__')
+							#st.bar_chart(voir3)
 
-							pie_chart_foyer = pd.DataFrame(df_conflit['Département'].value_counts())
-							st.markdown('__Effectif par foyer de conflit__')
-							st.bar_chart(pie_chart_foyer, use_container_width=True)
+							departement_group = df_conflit.groupby(by=['Département'], as_index=False)['Typologie'].count()
+							#st.write(departement_group)
+							bar_chart_departement = px.bar(departement_group,
+												x = 'Département',
+												y = 'Typologie',
+												
+												
+												title='Effectif des conflit par departement (Foyer de conflit)',
+												hover_name="Département",
+												#color_continuous_scale=['red', 'yellow', 'green'],
+												#template='plotly_white',
+												#title='hhhhf')
+												text = 'Typologie')
+							st.plotly_chart(bar_chart_departement, use_container_width=True)
+
+
+							#pie_chart_foyer = pd.DataFrame(df_conflit['Département'].value_counts())
+							#st.markdown('__Effectif par foyer de conflit__')
+							#st.bar_chart(pie_chart_foyer, use_container_width=True)
 
 							#voir3 = df_conflit["conflit", "annee"]("HOMME-ELEPHANTS")
 							#st.dataframe(voir3)
 
 
-
-
-							#st.subheader('Nombre de conflit par année')
-							annee_diagramme = pd.DataFrame(df_conflit['Année'].value_counts())
-							right_column.markdown('__Nombre de conflit par année__')
-							right_column.bar_chart(annee_diagramme, use_container_width=True)
-
-
 				
 							
-							#AJOUTE BARRE LATERALE
+							st.markdown("""---""")
+							st.header('Filtre avancée en mode graphique')
+							st.markdown('__Pour filtrer, il faut choisir une ou plusieurs années de conflits ainsi que un ou plusieurs type de conflit__')
 							
 
 							#AJOUT DES DONNEES DU FILTRE
+							requete_1, requete_2 = st.columns(2)
 							annee_var = df_conflit['Année'].unique().tolist()
-							annee_selection = st.sidebar.multiselect('Annee de conflit :', annee_var, default=2020)
+							annee_selection = requete_1.multiselect('Annee de conflit :', annee_var, default=2020)
 
 							conflit_var = df_conflit['Typologie'].unique().tolist()
-							conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
+							conflit_selection = requete_2.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
 
 							
 							## FILTRE DE DONNEES PAR CONFLIT
 
 							mask = (df_conflit['Année'].isin(annee_selection)) & (df_conflit['Typologie'].isin(conflit_selection))
 							number_of_result = df_conflit[mask].shape[0]
-							st.sidebar.markdown(f'*Resultat disponible:{number_of_result}*')
+							requete_1.markdown(f'*Resultat disponible:{number_of_result}*')
 
 							## GROUPER BLOC DE DONNEES APRES SELECTION
 							df_conflit_grouper = df_conflit[mask].groupby(by=['Typologie']).count()[['Année']]
@@ -252,11 +458,12 @@ def main():
 
 							
 							## AFFICHE LE DIAGRAMME DU FILTRE 
-							st.markdown("__Diagramme en Bande des données filtrées__")
+							#st.markdown("__Diagramme en Bande des données filtrées__")
 							graphique = px.bar(df_conflit_grouper,
 												x='Typologie',
 												y='Effectif',
-												text='Effectif')
+												text='Effectif',
+												title='Diagramme en Bande des données filtrées',)
 							st.plotly_chart(graphique)
        
 							
