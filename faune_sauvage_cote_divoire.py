@@ -12,6 +12,7 @@ from folium.plugins import MeasureControl
 from folium.plugins import MousePosition
 from folium.plugins import Search
 from folium.plugins import HeatMap
+import plotly.graph_objects as go
 #from gsheetsdb import connect
 from PIL import Image
 import openpyxl as xl
@@ -30,6 +31,8 @@ st.set_page_config(page_title='App.Conflits-DFRC/MINEF',
 
 
 def main():
+
+
 		
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
@@ -92,7 +95,7 @@ def main():
                     #converters={'NombreMort':int})	
 
 
-		df_blesses = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
+		df_blesses_mort_victime = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='STATISTIQUE_STREAMLIT',
                     usecols='J:L',
                     header=0,
@@ -101,6 +104,8 @@ def main():
 
 
 		if choix == "Données":
+							#with open('style.css') as f:
+								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 							#st.sidebar.subheader('FILTRE OU RECHERCHE')
 							
@@ -337,7 +342,9 @@ def main():
 								width=500,
 								height=500,
 								margin=dict(l=1,r=1,b=1,t=1),
-								font=dict(color='#FFFFFF', size=12))
+								font=dict(color='#FFFFFF', size=12),
+								paper_bgcolor='black',
+    							plot_bgcolor='#5D6D7E')
 
 							# this function adds labels to the pie chart
 							# for more information on this chart, visit: https://plotly.com/python/pie-charts/
@@ -350,23 +357,85 @@ def main():
 
 							#st.subheader('Nombre de conflit par année')
 							annee_diagramme = pd.DataFrame(df_conflit['Année'].value_counts())
-							part_annee.markdown('__Evolution des conflits au cours des années__')
+							#part_annee.markdown('__Evolution des conflits au cours des années__')
 							#part_annee.bar_chart(annee_diagramme, use_container_width=True)
 							#st.write(annee_diagramme)
 
 							anne_group = df_conflit.groupby(by=['Année'], as_index=False)['Typologie'].count()
 							#st.write(anne_group)
+							fig_annee = go.Figure()
+							fig_annee.add_trace(go.Scatter(x=anne_group.Année, y=anne_group.Typologie,
+														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
+							fig_annee.update_layout(title="Evolution des conflits entre 2011-2021",
+												xaxis_title="Année de conflit", yaxis_title="Effectif des conflit", legend_title="Legend Title",
+												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
+													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='black',
+    											plot_bgcolor='#5D6D7E')
+							part_annee.write(fig_annee)
 
-							fig_annee = px.line(anne_group, 
-												x='Année', y='Typologie')
-							part_annee.write(fig_annee, use_container_width=True)
+							#fig_annee = px.line(anne_group, 
+												#x='Année', y='Typologie', labels={'Année':'Année de conflit', 'Typologie':'nombre de conflit'})
+							#part_annee.write(fig_annee, use_container_width=True)
+
+							colonne_calcule = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
+							conflit_groupe = df_conflit.groupby(['Année'], as_index = False)[colonne_calcule].sum()
+							#st.write(conflit_groupe.rename(columns={'Autres victimes culture et matériel': 'Victimes'}))
+							conflit_copie = conflit_groupe.copy()
+							conflit_copie.rename(columns={'Autres victimes culture et matériel': 'Victimes'}, inplace=True)
+							#fig_annee_victim_autre = px.line(conflit_groupe, 
+												#x='Année', y=['Mort', 'Blessé'], labels={'Année':'Année de conflit'})
+							#st.write(fig_annee_victim_autre, use_container_width=True)
+							figure_1, figure_2 = st.columns(2)
+							fig_1 = go.Figure()
+							#figure_1.markdown('Evolution des effetifs des blessés et morts au cours des années')
+							fig_1.add_trace(go.Scatter(x=conflit_groupe.Année, y=conflit_groupe.Blessé,
+														mode= 'lines+markers', name='Blessé', line=dict(color='firebrick', width=2, dash='dashdot')))
+
+							fig_1.add_trace(go.Scatter(x=conflit_groupe.Année, y=conflit_groupe.Mort,
+														mode= 'lines+markers', name='Mort', line=dict(color='goldenrod', width=2, dash='dashdot')))
+							fig_1.update_layout(title="Evolution des effetifs des blessés et morts entre 2011-2021", 
+												xaxis_title="Année de conflit", yaxis_title="Nombre de Mort + Blessé", legend_title="Attribut",
+												paper_bgcolor='black',
+    											plot_bgcolor='#5D6D7E')
+							figure_1.write(fig_1)
+							
+
+							fig_2 = go.Figure()
+							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, y=conflit_copie.Victimes,
+														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
+							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011-2021",
+												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Legend Title",
+												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
+													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='black',
+    											plot_bgcolor='#5D6D7E')
+											    										    
+							figure_2.write(fig_2)
+
+
+							
 
 							#st.write(annee_diagramme)
 							#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
 							left_column, right_column = st.columns(2)
 
 							#st.markdown('__Effectif des morts, des blessés et des victimes par type de conflit__')
-							bar_chart = px.bar(df_blesses,
+							bar_chart = px.bar(df_blesses_mort_victime,
 												x = 'Typologie conflit',
 												y = 'Nombre',
 												color = 'Attribut',
@@ -377,6 +446,10 @@ def main():
 												#template='plotly_white',
 												#title='hhhhf')
 												text = 'Nombre')
+							bar_chart.update_layout({
+												'plot_bgcolor': 'black',
+												'paper_bgcolor': '#5D6D7E'
+												})
 							st.plotly_chart(bar_chart, use_container_width=True)
 
 							#st.markdown('__Effectif des blèssés par conflit__')
@@ -421,6 +494,10 @@ def main():
 												#template='plotly_white',
 												#title='hhhhf')
 												text = 'Typologie')
+							bar_chart_departement.update_layout({
+												'plot_bgcolor': 'black',
+												'paper_bgcolor': '#5D6D7E'
+												})
 							st.plotly_chart(bar_chart_departement, use_container_width=True)
 
 
