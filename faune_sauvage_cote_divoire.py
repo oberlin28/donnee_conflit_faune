@@ -366,8 +366,8 @@ def main():
 							fig_annee = go.Figure()
 							fig_annee.add_trace(go.Scatter(x=anne_group.Année, y=anne_group.Typologie,
 														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
-							fig_annee.update_layout(title="Evolution des conflits entre 2011-2021",
-												xaxis_title="Année de conflit", yaxis_title="Effectif des conflit", legend_title="Legend Title",
+							fig_annee.update_layout(title="Evolution des conflits entre 2011 et 2022",
+												xaxis_title="Année de conflit", yaxis_title="Effectif des conflit", legend_title="Légende",
 												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
 													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
 												    # Turn off everything on y axis
