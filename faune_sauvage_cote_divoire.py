@@ -39,8 +39,8 @@ def main():
 		st.sidebar.markdown("""---""")
 		
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
-		menu = ["Données", "Diagramme", "Carte"]
-		choix = st.sidebar.selectbox("Données * Diagramme * Carte", menu)
+		menu = ["Données", "Tableau de bord", "Cartographie"]
+		choix = st.sidebar.selectbox("Données * Tableau de bord * Cartographie", menu)
 		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
 		#if option=='POWERBI':
 			#st.markdown('https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare', unsafe_allow_html=True)
@@ -319,7 +319,7 @@ def main():
 							#st.dataframe(df_conflit_selection)
 							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
-		elif choix == "Diagramme":
+		elif choix == "Tableau de bord":
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
 							#st.components.htmlst.markdownunsafe_allow_html=True
@@ -559,7 +559,7 @@ def main():
 
 
 
-		elif choix == "Carte":
+		elif choix == "Cartographie":
 
 			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
