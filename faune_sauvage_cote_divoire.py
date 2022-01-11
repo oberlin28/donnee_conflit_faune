@@ -138,55 +138,65 @@ def main():
 							with col3 :
 								st.image("elephant.png", use_column_width=False, width=80) #caption = 'Eléphant')
 								oi1=valeur['percent'].values[0]
-								st.write(txt.format(oi1))
-								st.write()
+								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(oi1)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(oi1))
+								#st.write()
 								#st.write(oi)
 							
 							with col4 :
 								st.image("Buffle.png", use_column_width=False, width=80) #caption = 'Buffle')
 								oi2=valeur['percent'].values[1]
-								st.write(txt.format(oi2))
+								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(oi2)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(oi2))
 
 							with col5 :	
-								st.image("chimpanzé.png", use_column_width=False, width=50) #caption = 'Chimpanzé')
+								st.image("chimpanzé.png", use_column_width=False, width=55) #caption = 'Chimpanzé')
 								pp=valeur['percent'].values[3]
-								st.write(txt.format(pp))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp))
 							
 							with col6 :
-								st.image("rhinoceros.png", use_column_width=False, width=80) #caption = 'Rhinoceros')
+								st.image("rhinoceros.png", use_column_width=False, width=90) #caption = 'Rhinoceros')
 								pp2=valeur['percent'].values[4]
-								st.write(txt.format(pp2))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp2)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp2))
 							
 							with col7 :
-								st.image("hippopotamus.png", use_column_width=False, width=110) #caption = 'Hippopotame')
+								st.image("hippopotamus.png", use_column_width=False, width=135) #caption = 'Hippopotame')
 								pp3=valeur['percent'].values[2]
-								st.write(txt.format(pp3))
+								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(pp3)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp3))
 
 							col8, col9, col10, col11, col12 = st.columns(5)
 							with col8 :
 								st.image("leopard.png", use_column_width=False, width=80)# caption = 'Léopard')
 								pp4=valeur['percent'].values[7]
-								st.write(txt.format(pp4))
+								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp4)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp4))
 							
 							with col9 :
-								st.image("crocodile.png", use_column_width=False, width=130)# caption = 'Crocrodile')
+								st.image("crocodile.png", use_column_width=False, width=150)# caption = 'Crocrodile')
 								pp5=valeur['percent'].values[5]
-								st.write(txt.format(pp5))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp5)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp5))
 							
 							with col10 :
-								st.image("singe.png", use_column_width=False, width=70)# caption = 'Singe')
+								st.image("singe.png", use_column_width=False, width=50)# caption = 'Singe')
 								pp6=valeur['percent'].values[6]
-								st.write(txt.format(pp6))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp6))
 							
 							with col11 :
-								st.image("chauve-souris.png", use_column_width=False, width=130)# caption = 'Chauve-souris')
+								st.image("chauve-souris.png", use_column_width=False, width=150)# caption = 'Chauve-souris')
 								pp7=valeur['percent'].values[8]
-								st.write(txt.format(pp7))
+								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp7)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp7))
 							
 							with col12 :
-								st.image("epervier.png", use_column_width=False, width=80)# caption = 'Epervier')
+								st.image("epervier.png", use_column_width=False, width=70)# caption = 'Epervier')
 								pp8=valeur['percent'].values[9]
-								st.write(txt.format(pp8))
+								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
+								
 
 							st.markdown("""---""")
 							st.subheader("Statistique des données conflits Homme-Faune")
@@ -602,7 +612,7 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True,
-										max_bounds=True, min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30) #prefer_canvas=True
+										max_bounds=True) # min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30prefer_canvas=True
 					
 
 					#OUTILS DESSINS
