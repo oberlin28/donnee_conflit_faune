@@ -83,7 +83,7 @@ def main():
 			#st.dataframe(op)
 		df_conflit = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='DONNEES',
-                    usecols='A:N',
+                    usecols='A:Q',
                     header=0,
                     converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
@@ -97,7 +97,7 @@ def main():
 
 		df_blesses_mort_victime = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='STATISTIQUE_STREAMLIT',
-                    usecols='J:L',
+                    usecols='H:J',
                     header=0,
                     converters={'NombreBlessé':int})
 		#st.write(df_blesses)
