@@ -401,8 +401,8 @@ def main():
 
 							fig_1.add_trace(go.Scatter(x=conflit_groupe.Année, y=conflit_groupe.Mort,
 														mode= 'lines+markers', name='Mort', line=dict(color='goldenrod', width=2, dash='dashdot')))
-							fig_1.update_layout(title="Evolution des effetifs des blessés et morts entre 2011-2021", 
-												xaxis_title="Année de conflit", yaxis_title="Nombre de Mort + Blessé", legend_title="Attribut",
+							fig_1.update_layout(title="Evolution des effectifs des blessés et morts entre 2011 et 2022", 
+												xaxis_title="Année de conflit", yaxis_title="Nombre de Mort + Blessé", legend_title="Légende",
 												paper_bgcolor='black',
     											plot_bgcolor='#5D6D7E')
 							figure_1.write(fig_1)
@@ -411,8 +411,8 @@ def main():
 							fig_2 = go.Figure()
 							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, y=conflit_copie.Victimes,
 														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
-							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011-2021",
-												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Legend Title",
+							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011 et 2022",
+												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Légende",
 												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
 													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
 												    # Turn off everything on y axis
