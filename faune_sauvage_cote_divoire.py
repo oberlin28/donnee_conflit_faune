@@ -348,20 +348,30 @@ def main():
 
 							# TODO: change the values of the update_layout function and see the effect
 							fig.update_layout(showlegend=True,
-								#title='Part de chaque type de conflit',
+								title='Part de chaque type de conflit (%)',
 								width=500,
 								height=500,
 								margin=dict(l=1,r=1,b=1,t=1),
 								font=dict(color='#FFFFFF', size=12),
-								paper_bgcolor='black',
-    							plot_bgcolor='#5D6D7E')
+								paper_bgcolor='#5D6D7E',
+    							plot_bgcolor='white',
+    							legend=dict(
+											orientation="v", 
+											title_font_color="white", 
+											y=1.30, 
+											x=0.9, 
+											xanchor="left",
+											#yanchor="left", 
+											title=''
+													)
+    							)
 
 							# this function adds labels to the pie chart
 							# for more information on this chart, visit: https://plotly.com/python/pie-charts/
 							fig.update_traces(textposition='inside', textinfo='percent')
 
 							# after creating the chart, we display it on the app's screen using this command
-							part_typologie.markdown('__Part de chaque type de conflit (%)__')
+							#part_typologie.markdown('__Part de chaque type de conflit (%)__')
 							part_typologie.write(fig, use_container_width=True)
 
 
@@ -374,12 +384,33 @@ def main():
 							anne_group = df_conflit.groupby(by=['Année'], as_index=False)['Typologie'].count()
 							#st.write(anne_group)
 							fig_annee = go.Figure()
-							fig_annee.add_trace(go.Scatter(x=anne_group.Année, y=anne_group.Typologie,
-														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
+							fig_annee.add_trace(go.Scatter(x=anne_group.Année, 
+															y=anne_group.Typologie,
+															mode= 'lines+markers', 
+															name='Victimes', 
+															line=dict(
+																	color='goldenrod', 
+																	width=2, 
+																	dash='dashdot')
+															)
+												)
+
 							fig_annee.update_layout(title="Evolution des conflits entre 2011 et 2022",
-												xaxis_title="Année de conflit", yaxis_title="Effectif des conflit", legend_title="Légende",
-												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
-													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+												xaxis_title="Année de conflit", 
+												yaxis_title="Effectif des conflit", 
+												legend_title="Légende",
+												xaxis=dict(
+														showline=True,
+														showgrid=True,
+														showticklabels=True,
+														linecolor='rgb(4, 4, 4)',
+														linewidth=2,
+													    ticks='outside',
+													    tickfont=dict(
+													    		family='Arial',
+													    		size=12,
+													    		color='rgb(255, 255, 255)')
+													    ),
 												    # Turn off everything on y axis
 											    yaxis=dict(
 											        showgrid=True,
@@ -387,8 +418,32 @@ def main():
 											        showline=False,
 											        showticklabels=True
 												),
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white')
+
+							fig_annee.update_xaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_annee.update_yaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 							part_annee.write(fig_annee)
 
 							#fig_annee = px.line(anne_group, 
@@ -410,30 +465,104 @@ def main():
 														mode= 'lines+markers', name='Blessé', line=dict(color='firebrick', width=2, dash='dashdot')))
 
 							fig_1.add_trace(go.Scatter(x=conflit_groupe.Année, y=conflit_groupe.Mort,
-														mode= 'lines+markers', name='Mort', line=dict(color='goldenrod', width=2, dash='dashdot')))
+														mode= 'lines+markers', 
+														name='Mort', 
+														line=dict(
+																color='goldenrod', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
 							fig_1.update_layout(title="Evolution des effectifs des blessés et morts entre 2011 et 2022", 
-												xaxis_title="Année de conflit", yaxis_title="Nombre de Mort + Blessé", legend_title="Légende",
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+												xaxis_title="Année de conflit", 
+												yaxis_title="Nombre de Mort + Blessé", 
+												legend_title="Légende",
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+							#fig_1.update_xaxes(gridcolor='black', range=[2011, 2030])
+							fig_1.update_xaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+							fig_1.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 							figure_1.write(fig_1)
 							
 
 							fig_2 = go.Figure()
-							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, y=conflit_copie.Victimes,
-														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
+							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, 
+														y=conflit_copie.Victimes,
+														mode= 'lines+markers', 
+														name='Victimes', 
+														line=dict(
+															color='fuchsia', 
+															width=2, 
+															dash='dashdot')))
+
 							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011 et 2022",
 												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Légende",
-												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
-													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+												xaxis=dict(
+													showline=True,
+													gridcolor='black',
+													showgrid=True,
+													showticklabels=True,
+													linecolor='rgb(4, 4, 4)',
+													linewidth=2,
+													ticks='outside',
+													tickfont=dict(
+														family='Arial',
+														size=12,
+														color='rgb(255, 255, 255)')),
 												    # Turn off everything on y axis
 											    yaxis=dict(
 											        showgrid=True,
+											        gridcolor='black',
 											        zeroline=False,
 											        showline=False,
 											        showticklabels=True
 												),
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+
+							fig_2.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_2.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 											    										    
 							figure_2.write(fig_2)
 
@@ -457,9 +586,40 @@ def main():
 												#title='hhhhf')
 												text = 'Nombre')
 							bar_chart.update_layout({
-												'plot_bgcolor': 'black',
+												'plot_bgcolor': 'white',
 												'paper_bgcolor': '#5D6D7E'
-												})
+												}, font_color="black", 
+												title_font_color="white", 
+												legend_font_color="white",
+												legend=dict(
+													orientation="h", 
+													title_font_color="white", 
+													y=1.15, 
+													x=0.6, 
+													xanchor="left", 
+													title=''
+													)
+												)
+							bar_chart.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							bar_chart.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)#, range=[-1, 200]
 							st.plotly_chart(bar_chart, use_container_width=True)
 
 							#st.markdown('__Effectif des blèssés par conflit__')
@@ -505,9 +665,14 @@ def main():
 												#title='hhhhf')
 												text = 'Typologie')
 							bar_chart_departement.update_layout({
-												'plot_bgcolor': 'black',
+												'plot_bgcolor': 'white',
 												'paper_bgcolor': '#5D6D7E'
-												})
+												}, xaxis_title="Foyer de conflit", yaxis_title="Nombre de conflit")
+							
+							bar_chart_departement.update_xaxes(tickangle=45, tickfont=dict(family='Arial', color='white', size=12),
+													title_font=dict(color='white', size=16))
+							bar_chart_departement.update_yaxes(gridcolor='black', tickfont=dict(family='Arial', color='white', size=12),
+													title_font=dict(color='white', size=16))
 							st.plotly_chart(bar_chart_departement, use_container_width=True)
 
 
