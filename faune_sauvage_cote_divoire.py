@@ -112,8 +112,8 @@ def main():
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col1.image("minef.png", width=80)
 							col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
-							col2.markdown("""Cette Application est une version bêta en cours de dévéloppement. Elle présente les données
-								des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
+							col2.markdown("""Cette Application est une version bêta en cours de devéloppement. Elle présente les données
+								des differents conflits homme-faune de 2011 à 2022 dans tout le pays.
 								""")
 							
 							col2.markdown("""
@@ -249,7 +249,7 @@ def main():
 
 
 							st.markdown("""---""")
-							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
 							deroule_1, deroule_2 = st.columns([1.2, 1])
 
 							list_conflit = ['TOUT'] + df_conflit['Typologie'].unique().tolist()
