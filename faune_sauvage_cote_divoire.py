@@ -108,10 +108,14 @@ def main():
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 							#st.sidebar.subheader('FILTRE OU RECHERCHE')
+							info_text1="""APP.CONFLITS : Gestion des données Conflits Homme-Faune"""
+							st.markdown(f"<body style='background-color:NavajoWhite;'><h2 style='text-align: center; color: black;'>{info_text1}</h2></body>", unsafe_allow_html=True)
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col1.image("minef.png", width=80)
-							col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
+							
+
+							#col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
 							col2.markdown("""Cette Application est une version bêta en cours de devéloppement. Elle présente les données
 								des differents conflits homme-faune de 2011 à 2022 dans tout le pays.
 								""")
