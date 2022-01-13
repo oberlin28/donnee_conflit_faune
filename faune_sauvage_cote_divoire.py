@@ -111,22 +111,26 @@ def main():
 							info_text1="""APP.CONFLITS : Gestion des données Conflits Homme-Faune"""
 							st.markdown(f"<body style='background-color:NavajoWhite;'><h2 style='text-align: center; color: black;'>{info_text1}</h2></body>", unsafe_allow_html=True)
 							
-							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
+							
 							#col1.image("minef.png", width=80)
 							
-
+							st.markdown('')
 							#col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
-							col2.markdown("""Cette Application est une version bêta en cours de devéloppement. Elle présente les données
-								des differents conflits homme-faune de 2011 à 2022 dans tout le pays.
-								""")
+							info_text2="""L'APP.Conflits sert à : 1. Visualiser les données dans les DataFrames 2. Analyser les données à partir des tableaux statistiques & graphiques
+											3. Cartographier les données"""
+											
+							st.markdown(f"<h5 style='text-align: center; color: white;'>{info_text2}</h5></body>", unsafe_allow_html=True)
 							
-							col2.markdown("""
-								* ** Source de données : Directions Régionales des Eaux et Forêts.**
-								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
-								""")
+							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
+							#col2.markdown(
+								#* ** Source de données : Directions Régionales des Eaux et Forêts.**
+								#* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
+								#)
 
 							st.markdown("""---""")
-							st.subheader("Typologie des conflits")
+							info_text3="""Typologie des conflits et Pourcentage estimé"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text3}</h2></body>", unsafe_allow_html=True)
+							#st.subheader("Typologie des conflits")
 
 							valeur = pd.DataFrame(df_conflit['Typologie'].value_counts())
 
@@ -136,13 +140,13 @@ def main():
 							valeur['percent']=valeur['percent'].apply(lambda x:round(x,2))
 							#st.write(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent':'Pourcentage'}))
 							
-							txt = "Pourcentage estimé: {:.0F} %"
+							txt = "{:.2F} %"
 
 							col3, col4, col5, col6, col7 = st.columns(5)
 							with col3 :
 								st.image("elephant.png", use_column_width=False, width=80) #caption = 'Eléphant')
 								oi1=valeur['percent'].values[0]
-								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(oi1)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: Red;'>{txt.format(oi1)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(oi1))
 								#st.write()
 								#st.write(oi)
@@ -150,60 +154,63 @@ def main():
 							with col4 :
 								st.image("Buffle.png", use_column_width=False, width=80) #caption = 'Buffle')
 								oi2=valeur['percent'].values[1]
-								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(oi2)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(oi2)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(oi2))
 
 							with col5 :	
 								st.image("chimpanzé.png", use_column_width=False, width=55) #caption = 'Chimpanzé')
 								pp=valeur['percent'].values[3]
-								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp))
 							
 							with col6 :
 								st.image("rhinoceros.png", use_column_width=False, width=90) #caption = 'Rhinoceros')
 								pp2=valeur['percent'].values[4]
-								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp2)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp2)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp2))
 							
 							with col7 :
 								st.image("hippopotamus.png", use_column_width=False, width=135) #caption = 'Hippopotame')
 								pp3=valeur['percent'].values[2]
-								st.markdown(f"<h6 style='text-align: center; color: red;'>{txt.format(pp3)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp3)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp3))
 
 							col8, col9, col10, col11, col12 = st.columns(5)
 							with col8 :
 								st.image("leopard.png", use_column_width=False, width=80)# caption = 'Léopard')
 								pp4=valeur['percent'].values[7]
-								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp4)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp4)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp4))
 							
 							with col9 :
 								st.image("crocodile.png", use_column_width=False, width=150)# caption = 'Crocrodile')
 								pp5=valeur['percent'].values[5]
-								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp5)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp5)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp5))
 							
 							with col10 :
 								st.image("singe.png", use_column_width=False, width=50)# caption = 'Singe')
 								pp6=valeur['percent'].values[6]
-								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp6))
 							
 							with col11 :
 								st.image("chauve-souris.png", use_column_width=False, width=150)# caption = 'Chauve-souris')
 								pp7=valeur['percent'].values[8]
-								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp7)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp7)}</h6>", unsafe_allow_html=True)
 								#st.write(txt.format(pp7))
 							
 							with col12 :
 								st.image("epervier.png", use_column_width=False, width=70)# caption = 'Epervier')
 								pp8=valeur['percent'].values[9]
-								st.markdown(f"<h6 style='text-align: center; color: green;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
 								
+							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
+							lm2.markdown("""---""")
+							info_text4="""Tableaux Statistiques des données de conflits"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text4}</h2></body>", unsafe_allow_html=True)
 
-							st.markdown("""---""")
-							st.subheader("Statistique des données conflits Homme-Faune")
+							#st.subheader("Statistique des données conflits Homme-Faune")
 							# ---- COMBINER ET GROUPER LES VALEURS EN FONCTION DE LA TYPOLOGIE
 							colonne_calcule = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
 							conflit_groupe = df_conflit.groupby(['Typologie'], as_index = False)[colonne_calcule].sum()
@@ -251,9 +258,12 @@ def main():
 									deroulant_2.dataframe(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent': 'Pourcentage estimé'}), height=500)
 
 
+							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
+							lm2.markdown("""---""")
+							info_text5="""Données collectées de 2011 à 2022"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text5}</h2></body>", unsafe_allow_html=True)
 
-							st.markdown("""---""")
-							st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
+							#st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
 							deroule_1, deroule_2 = st.columns([1.2, 1])
 
 							list_conflit = ['TOUT'] + df_conflit['Typologie'].unique().tolist()
@@ -264,9 +274,10 @@ def main():
 							#conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
 
 							# you can filter/alter the data based on user input and display the results in a plot
-							st.write('Données filtrées')
-							with open('BD_conflitHommeFaune.xlsx', 'rb') as f:
-								st.download_button(label='Télécharger fichier', data = f)
+							st.markdown(f"<h5 style='text-align: left; color: yellow;'>{'Voir Données filtrées dans le tableau ci-dessous ⬇️'}</h5></body>", unsafe_allow_html=True)
+							#st.write('Données filtrées')
+							#with open('BD_conflitHommeFaune.xlsx', 'rb') as f:
+								#st.download_button(label='Télécharger fichier', data = f)
 							#st.download_button(label='Télécharger fichier', data = 's_station', file_name = 'Donnees_CHF', mime='.xlsx')
 							if s_station != 'TOUT':
 								display_data = df_conflit[df_conflit['Typologie'] == s_station]
