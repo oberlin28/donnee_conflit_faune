@@ -214,6 +214,25 @@ def main():
 							info_text4="""Tableaux Statistiques des données de conflits"""
 							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text4}</h2></body>", unsafe_allow_html=True)
 
+
+							#tablo_plotly = go.Figure(data=[go.Table(header=dict(values=['Typologie', 
+																						#'Année du conflit',
+																						#'Date de debut du conflit',
+																						#'Localité',
+																						#'Sous-prefecture',
+																						#'Département',
+																						#'Dégats',
+																						#'Mort',
+																						#'Blessé',
+																						#'Autres victimes culture et matériel',
+																						#'Service ayant constaté le conflit',
+																						#'Référence du courrier'
+
+																						#]),
+                 													#cells=dict(values=[[100, 90, 80, 90], [95, 85, 75, 95]]))
+                     										#])
+							#st.write(tablo_plotly)
+
 							#st.subheader("Statistique des données conflits Homme-Faune")
 							# ---- COMBINER ET GROUPER LES VALEURS EN FONCTION DE LA TYPOLOGIE
 							colonne_calcule = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
