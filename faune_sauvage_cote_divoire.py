@@ -32,8 +32,7 @@ st.set_page_config(page_title='App.Conflits-DFRC/MINEF',
 
 def main():
 
-
-		
+		#img_1, img_2, img_3 = st.columns([0.1, 0.5, 0.1])
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
@@ -41,6 +40,7 @@ def main():
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
 		menu = ["Données", "Tableau de bord", "Cartographie"]
 		choix = st.sidebar.selectbox("Données * Tableau de bord * Cartographie", menu)
+
 		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
 		#if option=='POWERBI':
 			#st.markdown('https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare', unsafe_allow_html=True)
@@ -104,6 +104,10 @@ def main():
 
 
 		if choix == "Données":
+							st.sidebar.markdown("""---""")
+							st.sidebar.markdown('Copyright')
+							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
@@ -112,7 +116,7 @@ def main():
 							st.markdown(f"<body style='background-color:NavajoWhite;'><h2 style='text-align: center; color: black;'>{info_text1}</h2></body>", unsafe_allow_html=True)
 							
 							
-							#col1.image("minef.png", width=80)
+							#st.sidebar.image("minef.png", width=80)
 							
 							st.markdown('')
 							#col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
@@ -345,6 +349,10 @@ def main():
 							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
 		elif choix == "Tableau de bord":
+							st.sidebar.markdown("""---""")
+							st.sidebar.markdown('Copyright')
+							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
 							#st.components.htmlst.markdownunsafe_allow_html=True
@@ -607,10 +615,10 @@ def main():
 												title_font_color="white", 
 												legend_font_color="white",
 												legend=dict(
-													orientation="h", 
+													orientation="v", 
 													title_font_color="white", 
-													y=1.15, 
-													x=0.6, 
+													#y=1.15, 
+													#x=0.6, 
 													xanchor="left", 
 													title=''
 													)
@@ -811,6 +819,12 @@ def main():
 
 			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
+
+			st.sidebar.markdown("""---""")
+			st.sidebar.markdown('Copyright')
+			st.sidebar.image("minef.png", width=70, caption='MINEF')
+			st.sidebar.image("dfrc.png", width=100, caption='DFRC')
+
 
 
 			#menu_deuxieme = ["CARTE DES CONFLITS", "CARTE DE CHALEUR"]
@@ -1196,10 +1210,11 @@ def main():
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=700)
 
-					#plugins.Fullscreen(position='topleft').add_to(carte)
-					
+					#plugins.Fullscreen(position='topleft').add_to(carte)		
     		
 			
+
+
 
 
 
