@@ -685,14 +685,21 @@ def main():
 
 
 				
-							
-							st.markdown("""---""")
-							st.header('Filtre avancée en mode graphique')
-							st.markdown('__Pour filtrer, il faut choisir une ou plusieurs années de conflits ainsi que un ou plusieurs type de conflit__')
+							text_a, text_b, text_c = st.columns([0.5, 1, 0.5])
+							text_b.markdown("""---""")
+							text_b.header('Filtre avancée en mode graphique')
+							info_text="""Pour filtrer, il faut choisir une ou plusieurs années de conflits ainsi que un ou plusieurs types de conflits.
+													A titre d'exemple, nous avons selectionné l'an 2020 avec le type de conflit 'HOMME-ELEPHANT'.
+													L'interpretation est qu'en 2020, nous avions eu 29 conflit HOMME-ELEPHANT"""
+							st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
+
+							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
 							
 
 							#AJOUT DES DONNEES DU FILTRE
 							requete_1, requete_2 = st.columns(2)
+							graph_1, graph_2, graph_3 = st.columns([0.5, 1, 0.5])
+
 							annee_var = df_conflit['Année'].unique().tolist()
 							annee_selection = requete_1.multiselect('Annee de conflit :', annee_var, default=2020)
 
@@ -704,7 +711,7 @@ def main():
 
 							mask = (df_conflit['Année'].isin(annee_selection)) & (df_conflit['Typologie'].isin(conflit_selection))
 							number_of_result = df_conflit[mask].shape[0]
-							requete_1.markdown(f'*Resultat disponible:{number_of_result}*')
+							graph_2.markdown(f'*Resultat disponible:{number_of_result}*')
 
 							## GROUPER BLOC DE DONNEES APRES SELECTION
 							df_conflit_grouper = df_conflit[mask].groupby(by=['Typologie']).count()[['Année']]
@@ -719,7 +726,7 @@ def main():
 												y='Effectif',
 												text='Effectif',
 												title='Diagramme en Bande des données filtrées',)
-							st.plotly_chart(graphique)
+							#st.plotly_chart(graphique)
        
 							
        						#st.subheader('Effectif total par type de conflits')
@@ -731,6 +738,57 @@ def main():
 							#	#text='Effectif'
         									#	)
 							#st.plotly_chart(graphique2)
+							
+							graph_1, graph_2, graph_3 = st.columns([0.5, 1, 0.5])
+							graphique.update_layout(title="Effectifs des conflits en fonction des années",
+												xaxis_title="Type de conflit", yaxis_title="Nombre de conflit", legend_title="Légende",
+												xaxis=dict(
+													showline=True,
+													gridcolor='black',
+													showgrid=True,
+													showticklabels=True,
+													linecolor='rgb(4, 4, 4)',
+													linewidth=2,
+													ticks='outside',
+													tickfont=dict(
+														family='Arial',
+														size=12,
+														color='rgb(255, 255, 255)')),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        gridcolor='black',
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+
+							graphique.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							graphique.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+											    										    
+							graph_2.write(graphique)
 
 
 
