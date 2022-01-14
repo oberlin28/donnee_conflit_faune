@@ -32,15 +32,15 @@ st.set_page_config(page_title='App.Conflits-DFRC/MINEF',
 
 def main():
 
-
-		
+		#img_1, img_2, img_3 = st.columns([0.1, 0.5, 0.1])
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
 		
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
-		menu = ["Données", "Diagramme", "Carte"]
-		choix = st.sidebar.selectbox("Données * Diagramme * Carte", menu)
+		menu = ["Données", "Tableau de bord", "Cartographie"]
+		choix = st.sidebar.selectbox("Données * Tableau de bord * Cartographie", menu)
+
 		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
 		#if option=='POWERBI':
 			#st.markdown('https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare', unsafe_allow_html=True)
@@ -83,7 +83,7 @@ def main():
 			#st.dataframe(op)
 		df_conflit = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='DONNEES',
-                    usecols='A:N',
+                    usecols='A:Q',
                     header=0,
                     converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
@@ -104,25 +104,37 @@ def main():
 
 
 		if choix == "Données":
+							st.sidebar.markdown("""---""")
+							st.sidebar.markdown('Copyright')
+							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
 							#st.sidebar.subheader('FILTRE OU RECHERCHE')
+							info_text1="""APP.CONFLITS : Gestion des données Conflits Homme-Faune"""
+							st.markdown(f"<body style='background-color:NavajoWhite;'><h2 style='text-align: center; color: black;'>{info_text1}</h2></body>", unsafe_allow_html=True)
+							
+							
+							#st.sidebar.image("minef.png", width=80)
+							
+							st.markdown('')
+							#col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
+							info_text2="""L'APP.Conflits sert à : 1. Visualiser les données dans les DataFrames 2. Analyser les données à partir des tableaux statistiques & graphiques
+											3. Cartographier les données"""
+											
+							st.markdown(f"<h5 style='text-align: center; color: white;'>{info_text2}</h5></body>", unsafe_allow_html=True)
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
-							#col1.image("minef.png", width=80)
-							col2.header("APP.CONFLITS : Gestion des données Conflits Homme-Faune")
-							col2.markdown("""Cette Application est une version bêta en cours de dévéloppement. Elle présente les données
-								des differents conflits homme-faune de 2011 à Juillet 2021 dans tout le pays.
-								""")
-							
-							col2.markdown("""
-								* ** Source de données : Directions Régionales des Eaux et Forêts.**
-								* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
-								""")
+							#col2.markdown(
+								#* ** Source de données : Directions Régionales des Eaux et Forêts.**
+								#* ** Traitement de données : Service Cartographique Direction de la Faune et des Ressources Cynégétiques (DFRC)**
+								#)
 
 							st.markdown("""---""")
-							st.subheader("Typologie des conflits")
+							info_text3="""Typologie des conflits et Pourcentage estimé"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text3}</h2></body>", unsafe_allow_html=True)
+							#st.subheader("Typologie des conflits")
 
 							valeur = pd.DataFrame(df_conflit['Typologie'].value_counts())
 
@@ -132,64 +144,96 @@ def main():
 							valeur['percent']=valeur['percent'].apply(lambda x:round(x,2))
 							#st.write(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent':'Pourcentage'}))
 							
-							txt = "Pourcentage estimé: {:.0F} %"
+							txt = "{:.2F} %"
 
 							col3, col4, col5, col6, col7 = st.columns(5)
 							with col3 :
 								st.image("elephant.png", use_column_width=False, width=80) #caption = 'Eléphant')
 								oi1=valeur['percent'].values[0]
-								st.write(txt.format(oi1))
-								st.write()
+								st.markdown(f"<h6 style='text-align: center; color: Red;'>{txt.format(oi1)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(oi1))
+								#st.write()
 								#st.write(oi)
 							
 							with col4 :
 								st.image("Buffle.png", use_column_width=False, width=80) #caption = 'Buffle')
 								oi2=valeur['percent'].values[1]
-								st.write(txt.format(oi2))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(oi2)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(oi2))
 
 							with col5 :	
-								st.image("chimpanzé.png", use_column_width=False, width=50) #caption = 'Chimpanzé')
+								st.image("chimpanzé.png", use_column_width=False, width=55) #caption = 'Chimpanzé')
 								pp=valeur['percent'].values[3]
-								st.write(txt.format(pp))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp))
 							
 							with col6 :
-								st.image("rhinoceros.png", use_column_width=False, width=80) #caption = 'Rhinoceros')
+								st.image("rhinoceros.png", use_column_width=False, width=90) #caption = 'Rhinoceros')
 								pp2=valeur['percent'].values[4]
-								st.write(txt.format(pp2))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp2)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp2))
 							
 							with col7 :
-								st.image("hippopotamus.png", use_column_width=False, width=110) #caption = 'Hippopotame')
+								st.image("hippopotamus.png", use_column_width=False, width=135) #caption = 'Hippopotame')
 								pp3=valeur['percent'].values[2]
-								st.write(txt.format(pp3))
+								st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp3)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp3))
 
 							col8, col9, col10, col11, col12 = st.columns(5)
 							with col8 :
 								st.image("leopard.png", use_column_width=False, width=80)# caption = 'Léopard')
 								pp4=valeur['percent'].values[7]
-								st.write(txt.format(pp4))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp4)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp4))
 							
 							with col9 :
-								st.image("crocodile.png", use_column_width=False, width=130)# caption = 'Crocrodile')
+								st.image("crocodile.png", use_column_width=False, width=150)# caption = 'Crocrodile')
 								pp5=valeur['percent'].values[5]
-								st.write(txt.format(pp5))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp5)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp5))
 							
 							with col10 :
-								st.image("singe.png", use_column_width=False, width=70)# caption = 'Singe')
+								st.image("singe.png", use_column_width=False, width=50)# caption = 'Singe')
 								pp6=valeur['percent'].values[6]
-								st.write(txt.format(pp6))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp6))
 							
 							with col11 :
-								st.image("chauve-souris.png", use_column_width=False, width=130)# caption = 'Chauve-souris')
+								st.image("chauve-souris.png", use_column_width=False, width=150)# caption = 'Chauve-souris')
 								pp7=valeur['percent'].values[8]
-								st.write(txt.format(pp7))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp7)}</h6>", unsafe_allow_html=True)
+								#st.write(txt.format(pp7))
 							
 							with col12 :
-								st.image("epervier.png", use_column_width=False, width=80)# caption = 'Epervier')
+								st.image("epervier.png", use_column_width=False, width=70)# caption = 'Epervier')
 								pp8=valeur['percent'].values[9]
-								st.write(txt.format(pp8))
+								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
+								
+							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
+							lm2.markdown("""---""")
+							info_text4="""Tableaux Statistiques des données de conflits"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text4}</h2></body>", unsafe_allow_html=True)
 
-							st.markdown("""---""")
-							st.subheader("Statistique des données conflits Homme-Faune")
+
+							#tablo_plotly = go.Figure(data=[go.Table(header=dict(values=['Typologie', 
+																						#'Année du conflit',
+																						#'Date de debut du conflit',
+																						#'Localité',
+																						#'Sous-prefecture',
+																						#'Département',
+																						#'Dégats',
+																						#'Mort',
+																						#'Blessé',
+																						#'Autres victimes culture et matériel',
+																						#'Service ayant constaté le conflit',
+																						#'Référence du courrier'
+
+																						#]),
+                 													#cells=dict(values=[[100, 90, 80, 90], [95, 85, 75, 95]]))
+                     										#])
+							#st.write(tablo_plotly)
+
+							#st.subheader("Statistique des données conflits Homme-Faune")
 							# ---- COMBINER ET GROUPER LES VALEURS EN FONCTION DE LA TYPOLOGIE
 							colonne_calcule = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
 							conflit_groupe = df_conflit.groupby(['Typologie'], as_index = False)[colonne_calcule].sum()
@@ -237,9 +281,12 @@ def main():
 									deroulant_2.dataframe(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent': 'Pourcentage estimé'}), height=500)
 
 
+							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
+							lm2.markdown("""---""")
+							info_text5="""Données collectées de 2011 à 2022"""
+							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text5}</h2></body>", unsafe_allow_html=True)
 
-							st.markdown("""---""")
-							st.subheader("Données des Conflits Homme-Faune de 2011 à Juillet 2021")
+							#st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
 							deroule_1, deroule_2 = st.columns([1.2, 1])
 
 							list_conflit = ['TOUT'] + df_conflit['Typologie'].unique().tolist()
@@ -250,9 +297,10 @@ def main():
 							#conflit_selection = st.sidebar.multiselect('Type de conflit :', conflit_var, default='HOMME-ELEPHANT')
 
 							# you can filter/alter the data based on user input and display the results in a plot
-							st.write('Données filtrées')
-							with open('BD_conflitHommeFaune.xlsx', 'rb') as f:
-								st.download_button(label='Télécharger fichier', data = f)
+							st.markdown(f"<h5 style='text-align: left; color: yellow;'>{'Voir Données filtrées dans le tableau ci-dessous ⬇️'}</h5></body>", unsafe_allow_html=True)
+							#st.write('Données filtrées')
+							#with open('BD_conflitHommeFaune.xlsx', 'rb') as f:
+								#st.download_button(label='Télécharger fichier', data = f)
 							#st.download_button(label='Télécharger fichier', data = 's_station', file_name = 'Donnees_CHF', mime='.xlsx')
 							if s_station != 'TOUT':
 								display_data = df_conflit[df_conflit['Typologie'] == s_station]
@@ -319,7 +367,11 @@ def main():
 							#st.dataframe(df_conflit_selection)
 							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
-		elif choix == "Diagramme":
+		elif choix == "Tableau de bord":
+							st.sidebar.markdown("""---""")
+							st.sidebar.markdown('Copyright')
+							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
 							#st.components.htmlst.markdownunsafe_allow_html=True
@@ -338,20 +390,30 @@ def main():
 
 							# TODO: change the values of the update_layout function and see the effect
 							fig.update_layout(showlegend=True,
-								#title='Part de chaque type de conflit',
+								title='Part de chaque type de conflit (%)',
 								width=500,
 								height=500,
 								margin=dict(l=1,r=1,b=1,t=1),
 								font=dict(color='#FFFFFF', size=12),
-								paper_bgcolor='black',
-    							plot_bgcolor='#5D6D7E')
+								paper_bgcolor='#5D6D7E',
+    							plot_bgcolor='white',
+    							legend=dict(
+											orientation="v", 
+											title_font_color="white", 
+											y=1.30, 
+											x=0.9, 
+											xanchor="left",
+											#yanchor="left", 
+											title=''
+													)
+    							)
 
 							# this function adds labels to the pie chart
 							# for more information on this chart, visit: https://plotly.com/python/pie-charts/
 							fig.update_traces(textposition='inside', textinfo='percent')
 
 							# after creating the chart, we display it on the app's screen using this command
-							part_typologie.markdown('__Part de chaque type de conflit (%)__')
+							#part_typologie.markdown('__Part de chaque type de conflit (%)__')
 							part_typologie.write(fig, use_container_width=True)
 
 
@@ -364,12 +426,33 @@ def main():
 							anne_group = df_conflit.groupby(by=['Année'], as_index=False)['Typologie'].count()
 							#st.write(anne_group)
 							fig_annee = go.Figure()
-							fig_annee.add_trace(go.Scatter(x=anne_group.Année, y=anne_group.Typologie,
-														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
-							fig_annee.update_layout(title="Evolution des conflits entre 2011-2021",
-												xaxis_title="Année de conflit", yaxis_title="Effectif des conflit", legend_title="Legend Title",
-												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
-													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+							fig_annee.add_trace(go.Scatter(x=anne_group.Année, 
+															y=anne_group.Typologie,
+															mode= 'lines+markers', 
+															name='Victimes', 
+															line=dict(
+																	color='goldenrod', 
+																	width=2, 
+																	dash='dashdot')
+															)
+												)
+
+							fig_annee.update_layout(title="Evolution des conflits entre 2011 et 2022",
+												xaxis_title="Année de conflit", 
+												yaxis_title="Effectif des conflit", 
+												legend_title="Légende",
+												xaxis=dict(
+														showline=True,
+														showgrid=True,
+														showticklabels=True,
+														linecolor='rgb(4, 4, 4)',
+														linewidth=2,
+													    ticks='outside',
+													    tickfont=dict(
+													    		family='Arial',
+													    		size=12,
+													    		color='rgb(255, 255, 255)')
+													    ),
 												    # Turn off everything on y axis
 											    yaxis=dict(
 											        showgrid=True,
@@ -377,8 +460,32 @@ def main():
 											        showline=False,
 											        showticklabels=True
 												),
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white')
+
+							fig_annee.update_xaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_annee.update_yaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 							part_annee.write(fig_annee)
 
 							#fig_annee = px.line(anne_group, 
@@ -400,30 +507,104 @@ def main():
 														mode= 'lines+markers', name='Blessé', line=dict(color='firebrick', width=2, dash='dashdot')))
 
 							fig_1.add_trace(go.Scatter(x=conflit_groupe.Année, y=conflit_groupe.Mort,
-														mode= 'lines+markers', name='Mort', line=dict(color='goldenrod', width=2, dash='dashdot')))
-							fig_1.update_layout(title="Evolution des effetifs des blessés et morts entre 2011-2021", 
-												xaxis_title="Année de conflit", yaxis_title="Nombre de Mort + Blessé", legend_title="Attribut",
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+														mode= 'lines+markers', 
+														name='Mort', 
+														line=dict(
+																color='goldenrod', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+							fig_1.update_layout(title="Evolution des effectifs des blessés et morts entre 2011 et 2022", 
+												xaxis_title="Année de conflit", 
+												yaxis_title="Nombre de Mort + Blessé", 
+												legend_title="Légende",
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+							#fig_1.update_xaxes(gridcolor='black', range=[2011, 2030])
+							fig_1.update_xaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+							fig_1.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 							figure_1.write(fig_1)
 							
 
 							fig_2 = go.Figure()
-							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, y=conflit_copie.Victimes,
-														mode= 'lines+markers', name='Victimes', line=dict(color='fuchsia', width=2, dash='dashdot')))
-							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011-2021",
-												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Legend Title",
-												xaxis=dict(showline=True,showgrid=True,showticklabels=True,linecolor='rgb(4, 4, 4)',linewidth=2,
-													        ticks='outside',tickfont=dict(family='Arial',size=12,color='rgb(255, 255, 255)')),
+							fig_2.add_trace(go.Scatter(x=conflit_copie.Année, 
+														y=conflit_copie.Victimes,
+														mode= 'lines+markers', 
+														name='Victimes', 
+														line=dict(
+															color='fuchsia', 
+															width=2, 
+															dash='dashdot')))
+
+							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011 et 2022",
+												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Légende",
+												xaxis=dict(
+													showline=True,
+													gridcolor='black',
+													showgrid=True,
+													showticklabels=True,
+													linecolor='rgb(4, 4, 4)',
+													linewidth=2,
+													ticks='outside',
+													tickfont=dict(
+														family='Arial',
+														size=12,
+														color='rgb(255, 255, 255)')),
 												    # Turn off everything on y axis
 											    yaxis=dict(
 											        showgrid=True,
+											        gridcolor='black',
 											        zeroline=False,
 											        showline=False,
 											        showticklabels=True
 												),
-												paper_bgcolor='black',
-    											plot_bgcolor='#5D6D7E')
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+
+							fig_2.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_2.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
 											    										    
 							figure_2.write(fig_2)
 
@@ -447,9 +628,40 @@ def main():
 												#title='hhhhf')
 												text = 'Nombre')
 							bar_chart.update_layout({
-												'plot_bgcolor': 'black',
+												'plot_bgcolor': 'white',
 												'paper_bgcolor': '#5D6D7E'
-												})
+												}, font_color="black", 
+												title_font_color="white", 
+												legend_font_color="white",
+												legend=dict(
+													orientation="v", 
+													title_font_color="white", 
+													#y=1.15, 
+													#x=0.6, 
+													xanchor="left", 
+													title=''
+													)
+												)
+							bar_chart.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							bar_chart.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)#, range=[-1, 200]
 							st.plotly_chart(bar_chart, use_container_width=True)
 
 							#st.markdown('__Effectif des blèssés par conflit__')
@@ -495,9 +707,14 @@ def main():
 												#title='hhhhf')
 												text = 'Typologie')
 							bar_chart_departement.update_layout({
-												'plot_bgcolor': 'black',
+												'plot_bgcolor': 'white',
 												'paper_bgcolor': '#5D6D7E'
-												})
+												}, xaxis_title="Foyer de conflit", yaxis_title="Nombre de conflit")
+							
+							bar_chart_departement.update_xaxes(tickangle=45, tickfont=dict(family='Arial', color='white', size=12),
+													title_font=dict(color='white', size=16))
+							bar_chart_departement.update_yaxes(gridcolor='black', tickfont=dict(family='Arial', color='white', size=12),
+													title_font=dict(color='white', size=16))
 							st.plotly_chart(bar_chart_departement, use_container_width=True)
 
 
@@ -510,14 +727,21 @@ def main():
 
 
 				
-							
-							st.markdown("""---""")
-							st.header('Filtre avancée en mode graphique')
-							st.markdown('__Pour filtrer, il faut choisir une ou plusieurs années de conflits ainsi que un ou plusieurs type de conflit__')
+							text_a, text_b, text_c = st.columns([0.5, 1, 0.5])
+							text_b.markdown("""---""")
+							text_b.header('Filtre avancée en mode graphique')
+							info_text="""Pour filtrer, il faut choisir une ou plusieurs années de conflits ainsi que un ou plusieurs types de conflits.
+													A titre d'exemple, nous avons selectionné l'an 2020 avec le type de conflit 'HOMME-ELEPHANT'.
+													L'interpretation est qu'en 2020, nous avions eu 29 conflit HOMME-ELEPHANT"""
+							st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
+
+							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{txt.format(pp6)}</h6>", unsafe_allow_html=True)
 							
 
 							#AJOUT DES DONNEES DU FILTRE
 							requete_1, requete_2 = st.columns(2)
+							graph_1, graph_2, graph_3 = st.columns([0.5, 1, 0.5])
+
 							annee_var = df_conflit['Année'].unique().tolist()
 							annee_selection = requete_1.multiselect('Annee de conflit :', annee_var, default=2020)
 
@@ -529,7 +753,7 @@ def main():
 
 							mask = (df_conflit['Année'].isin(annee_selection)) & (df_conflit['Typologie'].isin(conflit_selection))
 							number_of_result = df_conflit[mask].shape[0]
-							requete_1.markdown(f'*Resultat disponible:{number_of_result}*')
+							graph_2.markdown(f'*Resultat disponible:{number_of_result}*')
 
 							## GROUPER BLOC DE DONNEES APRES SELECTION
 							df_conflit_grouper = df_conflit[mask].groupby(by=['Typologie']).count()[['Année']]
@@ -544,7 +768,7 @@ def main():
 												y='Effectif',
 												text='Effectif',
 												title='Diagramme en Bande des données filtrées',)
-							st.plotly_chart(graphique)
+							#st.plotly_chart(graphique)
        
 							
        						#st.subheader('Effectif total par type de conflits')
@@ -556,13 +780,70 @@ def main():
 							#	#text='Effectif'
         									#	)
 							#st.plotly_chart(graphique2)
+							
+							graph_1, graph_2, graph_3 = st.columns([0.5, 1, 0.5])
+							graphique.update_layout(title="Effectifs des conflits en fonction des années",
+												xaxis_title="Type de conflit", yaxis_title="Nombre de conflit", legend_title="Légende",
+												xaxis=dict(
+													showline=True,
+													gridcolor='black',
+													showgrid=True,
+													showticklabels=True,
+													linecolor='rgb(4, 4, 4)',
+													linewidth=2,
+													ticks='outside',
+													tickfont=dict(
+														family='Arial',
+														size=12,
+														color='rgb(255, 255, 255)')),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        gridcolor='black',
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white',
+    											height=400, 
+    											width=700)
+
+							graphique.update_xaxes(tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=10),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							graphique.update_yaxes(gridcolor='black', 
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+											    										    
+							graph_2.write(graphique)
 
 
 
-		elif choix == "Carte":
+		elif choix == "Cartographie":
 
 			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
+
+			st.sidebar.markdown("""---""")
+			st.sidebar.markdown('Copyright')
+			st.sidebar.image("minef.png", width=70, caption='MINEF')
+			st.sidebar.image("dfrc.png", width=100, caption='DFRC')
+
 
 
 			#menu_deuxieme = ["CARTE DES CONFLITS", "CARTE DE CHALEUR"]
@@ -602,7 +883,7 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True,
-										max_bounds=True, min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30) #prefer_canvas=True
+										max_bounds=True) # min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30prefer_canvas=True
 					
 
 					#OUTILS DESSINS
@@ -948,10 +1229,11 @@ def main():
 					# AFFICHER LA CARTE DANS STREAMLIT
 					folium_static(carte, width=1070, height=700)
 
-					#plugins.Fullscreen(position='topleft').add_to(carte)
-					
+					#plugins.Fullscreen(position='topleft').add_to(carte)		
     		
 			
+
+
 
 
 
