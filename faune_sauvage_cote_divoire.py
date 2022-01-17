@@ -110,7 +110,7 @@ def main():
 		if choix == "Données 💾":
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
-							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("minef.png", width=150, caption='')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
@@ -377,7 +377,7 @@ def main():
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
 							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
-							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.image("minef.png", width=150, caption='')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
@@ -848,7 +848,7 @@ def main():
 
 			st.sidebar.markdown("""---""")
 			st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
-			st.sidebar.image("minef.png", width=70, caption='MINEF')
+			st.sidebar.image("minef.png", width=150, caption='')
 			#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 
 
