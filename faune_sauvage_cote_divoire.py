@@ -20,6 +20,7 @@ import time
 from pathlib import Path 
 import base64
 import pickle
+import datetime 
 #from sklearn.linear_model import LogisticRegression
 #from sklearn.model_selection import train_test_split
 
@@ -102,10 +103,13 @@ def main():
                     converters={'NombreBlessé':int})
 		#st.write(df_blesses)
 
+		date_jour = str(datetime.date.today())
+		
+		info_text_1_1=date_jour
 
 		if choix == "Données":
 							st.sidebar.markdown("""---""")
-							st.sidebar.markdown('Copyright')
+							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
 							st.sidebar.image("minef.png", width=70, caption='MINEF')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
@@ -124,6 +128,8 @@ def main():
 											3. Cartographier les données"""
 											
 							st.markdown(f"<h5 style='text-align: center; color: white;'>{info_text2}</h5></body>", unsafe_allow_html=True)
+							
+							#st.write(info_text_1_1)
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col2.markdown(
@@ -283,7 +289,7 @@ def main():
 
 							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
 							lm2.markdown("""---""")
-							info_text5="""Données collectées de 2011 à 2022"""
+							info_text5="""Données collectées de 2011 à """ + info_text_1_1
 							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text5}</h2></body>", unsafe_allow_html=True)
 
 							#st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
@@ -369,7 +375,8 @@ def main():
 				
 		elif choix == "Tableau de bord":
 							st.sidebar.markdown("""---""")
-							st.sidebar.markdown('Copyright')
+							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
+							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
 							st.sidebar.image("minef.png", width=70, caption='MINEF')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
@@ -437,7 +444,7 @@ def main():
 															)
 												)
 
-							fig_annee.update_layout(title="Evolution des conflits entre 2011 et 2022",
+							fig_annee.update_layout(title="Evolution des conflits de 2011 à " + info_text_1_1,
 												xaxis_title="Année de conflit", 
 												yaxis_title="Effectif des conflit", 
 												legend_title="Légende",
@@ -516,7 +523,7 @@ def main():
 																)
 														)
 											)
-							fig_1.update_layout(title="Evolution des effectifs des blessés et morts entre 2011 et 2022", 
+							fig_1.update_layout(title="Evolution des effectifs des blessés et morts de 2011 à " + info_text_1_1, 
 												xaxis_title="Année de conflit", 
 												yaxis_title="Nombre de Mort + Blessé", 
 												legend_title="Légende",
@@ -558,7 +565,7 @@ def main():
 															width=2, 
 															dash='dashdot')))
 
-							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011 et 2022",
+							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) de 2011 à " + info_text_1_1,
 												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Légende",
 												xaxis=dict(
 													showline=True,
@@ -621,7 +628,7 @@ def main():
 												y = 'Nombre',
 												color = 'Attribut',
 												barmode="group",
-												title='Effectif des morts, des blessés et des victimes par type de conflit',
+												title='Effectif des morts, des blessés et des victimes par type de conflit de 2011 à ' + info_text_1_1,
 												hover_name="Typologie conflit",
 												#color_continuous_scale=['red', 'yellow', 'green'],
 												#template='plotly_white',
@@ -700,7 +707,7 @@ def main():
 												y = 'Typologie',
 												
 												
-												title='Effectif des conflit par departement (Foyer de conflit)',
+												title='Effectif des conflit par departement (Foyer de conflit) de 2011 à ' + info_text_1_1,
 												hover_name="Département",
 												#color_continuous_scale=['red', 'yellow', 'green'],
 												#template='plotly_white',
@@ -840,7 +847,7 @@ def main():
 			page = st.sidebar.radio('Aller à', page_nom)
 
 			st.sidebar.markdown("""---""")
-			st.sidebar.markdown('Copyright')
+			st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
 			st.sidebar.image("minef.png", width=70, caption='MINEF')
 			#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 
