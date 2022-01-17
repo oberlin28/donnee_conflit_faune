@@ -107,7 +107,7 @@ def main():
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown('Copyright')
 							st.sidebar.image("minef.png", width=70, caption='MINEF')
-							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
+							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
 
@@ -141,7 +141,7 @@ def main():
 							
 
 							valeur['percent'] = (valeur['Typologie'] / valeur['Typologie'].sum()) * 100
-							valeur['percent']=valeur['percent'].apply(lambda x:round(x,2))
+							valeur['percent']=valeur['percent'].apply(lambda x:round(x,4))
 							#st.write(valeur.rename(columns={'Typologie': 'Nombre de conflit', 'percent':'Pourcentage'}))
 							
 							txt = "{:.2F} %"
@@ -215,23 +215,7 @@ def main():
 							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text4}</h2></body>", unsafe_allow_html=True)
 
 
-							#tablo_plotly = go.Figure(data=[go.Table(header=dict(values=['Typologie', 
-																						#'Année du conflit',
-																						#'Date de debut du conflit',
-																						#'Localité',
-																						#'Sous-prefecture',
-																						#'Département',
-																						#'Dégats',
-																						#'Mort',
-																						#'Blessé',
-																						#'Autres victimes culture et matériel',
-																						#'Service ayant constaté le conflit',
-																						#'Référence du courrier'
-
-																						#]),
-                 													#cells=dict(values=[[100, 90, 80, 90], [95, 85, 75, 95]]))
-                     										#])
-							#st.write(tablo_plotly)
+							
 
 							#st.subheader("Statistique des données conflits Homme-Faune")
 							# ---- COMBINER ET GROUPER LES VALEURS EN FONCTION DE LA TYPOLOGIE
@@ -239,6 +223,22 @@ def main():
 							conflit_groupe = df_conflit.groupby(['Typologie'], as_index = False)[colonne_calcule].sum()
 							st.dataframe(conflit_groupe.rename(columns={'Mort': 'Nombre de personnes mortes', 'Blessé': 'Nombre de personnes blessées'}), height=700)
 							
+
+							tablo_plotly = go.Figure(data=[go.Table(header=dict(values=['Typologie', 														
+																						'Mort',
+																						'Blessé'
+																						#'Autres victimes culture et matériel',
+																						],
+																						fill_color='#FD8E72',
+                 																		align='center'),
+                 													cells=dict(values=[conflit_groupe.Typologie, conflit_groupe.Mort, conflit_groupe.Blessé],
+                 																fill_color='#5D6D7E',
+                 																align='center'),
+
+
+                 													)
+                     										])
+							#st.write(tablo_plotly)
 
 							Tableau = pd.DataFrame(df_conflit['Typologie'].value_counts())
 							valeur_foyer = pd.DataFrame(df_conflit['Département'].value_counts(dropna=True, normalize=False))
@@ -371,7 +371,7 @@ def main():
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown('Copyright')
 							st.sidebar.image("minef.png", width=70, caption='MINEF')
-							st.sidebar.image("dfrc.png", width=100, caption='DFRC')
+							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
 							#st.components.htmlst.markdownunsafe_allow_html=True
@@ -842,7 +842,7 @@ def main():
 			st.sidebar.markdown("""---""")
 			st.sidebar.markdown('Copyright')
 			st.sidebar.image("minef.png", width=70, caption='MINEF')
-			st.sidebar.image("dfrc.png", width=100, caption='DFRC')
+			#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 
 
 
