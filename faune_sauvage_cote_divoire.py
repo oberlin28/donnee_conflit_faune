@@ -39,7 +39,7 @@ def main():
 		st.sidebar.markdown("""---""")
 		
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
-		menu = ["Données", "Tableau de bord", "Cartographie"]
+		menu = ["Données 💾", "Tableau de bord 📈", "Cartographie 🌈"]
 		choix = st.sidebar.selectbox("Données * Tableau de bord * Cartographie", menu)
 
 		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
@@ -107,7 +107,7 @@ def main():
 		
 		info_text_1_1=date_jour
 
-		if choix == "Données":
+		if choix == "Données 💾":
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
 							st.sidebar.image("minef.png", width=70, caption='MINEF')
@@ -373,7 +373,7 @@ def main():
 							#st.dataframe(df_conflit_selection)
 							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
-		elif choix == "Tableau de bord":
+		elif choix == "Tableau de bord 📈":
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
 							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
@@ -841,7 +841,7 @@ def main():
 
 
 
-		elif choix == "Cartographie":
+		elif choix == "Cartographie 🌈":
 
 			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
