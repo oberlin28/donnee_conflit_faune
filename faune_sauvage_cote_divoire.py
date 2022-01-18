@@ -422,7 +422,7 @@ def main():
 							#st.dataframe(data=df_conflit, height=600)
 							#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
 							repre_1, repre_2, repre_3 = st.columns([0.7, 1.5, 0.5])
-							repre_2.subheader("REPRESENTATION GRAPHIQUE DES DONNEES")
+							repre_2.subheader("REPRESENTATION GRAPHIQUE DES DONNEES 📈")
 							st.markdown("""---""")
 
 							part_typologie, part_annee = st.columns(2)
@@ -1042,7 +1042,7 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True,
-										max_bounds=True) # min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30prefer_canvas=True
+										max_bounds=True, min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30, prefer_canvas=True)
 					
 
 					#OUTILS DESSINS
