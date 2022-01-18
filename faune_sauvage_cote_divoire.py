@@ -107,6 +107,33 @@ def main():
 		
 		info_text_1_1=date_jour
 
+		#ELEMENTS DU GRAPHIQUE DES CONFLITS
+		elephant_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-ELEPHANT']
+		buffle_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-BUFFLE']
+		chimpanze_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CHIMPANZE']
+		hippo_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-HIPPOPOTAME']
+		crocodile_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CROCODILE']
+		rino_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-RHINOCEROS']
+		leopard_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-LEOPARD']
+		singe_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-SINGES']
+		epervier_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-EPERVIER']
+		chauve_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CHAUVE SOURIS']
+		
+
+		valeur_foyer_select = elephant_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		#st.write(valeur_foyer_select.rename(columns={'Typologie': 'Nombre'}))
+
+		valeur_foyer_select1 = buffle_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		#st.write(valeur_foyer_select1.rename(columns={'Typologie': 'Nombre'}))
+		valeur_foyer_select2 = chimpanze_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select3 = hippo_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select4 = crocodile_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select5 = rino_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select6 = leopard_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select7 = singe_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select8 = epervier_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select9 = chauve_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+
 		if choix == "Données 💾":
 							st.sidebar.markdown("""---""")
 							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
@@ -214,7 +241,16 @@ def main():
 								st.image("epervier.png", use_column_width=False, width=70)# caption = 'Epervier')
 								pp8=valeur['percent'].values[9]
 								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
-								
+							#colonne_calcule2 = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
+							
+
+
+							
+
+
+
+
+							
 							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
 							lm2.markdown("""---""")
 							info_text4="""Tableaux Statistiques des données de conflits"""
@@ -615,8 +651,124 @@ def main():
 											    										    
 							figure_2.write(fig_2)
 
+							graph_4, graph_5, graph_6 = st.columns([0.5, 1, 0.5])
+							#DIAGRAMME D'EVOLUTION DES DIFFERENTS TYPES DE CONFLITS
+							fig_elephant = go.Figure()
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select.Année, 
+															y=valeur_foyer_select.Typologie,mode= 'lines+markers',name='Elephant',  
+															line=dict(color='red', width=2, dash='dashdot')	
+															))
+												
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select1.Année, y=valeur_foyer_select1.Typologie,
+														mode= 'lines+markers', 
+														name='Buffle', 
+														line=dict(color='goldenrod', width=2, dash='dashdot')))
 
-							
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select2.Année, y=valeur_foyer_select2.Typologie,
+														mode= 'lines+markers', name='Chimpanzé',
+														line=dict(color='green',width=2,dash='dashdot' 
+																)))
+															
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select3.Année, y=valeur_foyer_select3.Typologie,
+														mode= 'lines+markers', 
+														name='Hippopotame', 
+														line=dict(
+																color='violet', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select4.Année, y=valeur_foyer_select4.Typologie,
+														mode= 'lines+markers', 
+														name='Crocodile', 
+														line=dict(
+																color='navy', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select5.Année, y=valeur_foyer_select4.Typologie,
+														mode= 'lines+markers', 
+														name='Rhinoceros', 
+														line=dict(
+																color='lightskyblue', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select6.Année, y=valeur_foyer_select6.Typologie,
+														mode= 'lines+markers', 
+														name='Léopard', 
+														line=dict(color='darkviolet', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select7.Année, y=valeur_foyer_select7.Typologie,
+														mode= 'lines+markers', 
+														name='Singe', 
+														line=dict(color='black', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select8.Année, y=valeur_foyer_select8.Typologie,
+														mode= 'lines+markers', 
+														name='Epervier', 
+														line=dict(color='pink', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select9.Année, y=valeur_foyer_select9.Typologie,
+														mode= 'lines+markers', 
+														name='Chauve-souris', 
+														line=dict(color='yellow', width=2, dash='dashdot')))
+
+							fig_elephant.update_layout(title="Evolution de chaque types de conflits de 2011 à " + info_text_1_1,
+												xaxis_title="Année de conflit", 
+												yaxis_title="Nombre de conflits", 
+												legend_title="Conflit",
+												xaxis=dict(
+														showline=True,
+														showgrid=True,
+														showticklabels=True,
+														linecolor='rgb(4, 4, 4)',
+														linewidth=2,
+													    ticks='outside',
+													    tickfont=dict(
+													    		family='Arial',
+													    		size=12,
+													    		color='rgb(255, 255, 255)')
+													    ),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white')
+
+							fig_elephant.update_xaxes(gridcolor='black',
+													tickfont=dict(family='Arial', 
+														color='white',size=12), 
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_elephant.update_yaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+							graph_5.write(fig_elephant)
 
 							#st.write(annee_diagramme)
 							#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
