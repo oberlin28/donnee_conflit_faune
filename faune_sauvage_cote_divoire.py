@@ -33,6 +33,12 @@ st.set_page_config(page_title='App.Conflits-DFRC/MINEF',
 
 def main():
 
+		st.markdown("""<style> 
+			header{visibility:show;} 
+			footer{visibility:hidden;} 
+			#MainMenu{visibility:show;}
+			</style>""", unsafe_allow_html=True)
+
 		#img_1, img_2, img_3 = st.columns([0.1, 0.5, 0.1])
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
