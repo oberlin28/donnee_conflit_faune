@@ -250,12 +250,6 @@ def main():
 							#colonne_calcule2 = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
 							
 
-
-							
-
-
-
-
 							
 							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
 							lm2.markdown("""---""")
@@ -1318,8 +1312,13 @@ def main():
 					#MESURE SUR LA CARTE
 					carte.add_child(MeasureControl(position='bottomleft', primary_area_unit='hectares', secondary_area_unit='sqmeters', primary_length_unit='kilometers', secondary_length_unit='meters',))
 					
-					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=700)
+					#kl, ol, mp = st.columns([0.5, 1, 0.5])
+					#with ol:
+
+						# AFFICHER LA CARTE DANS STREAMLIT
+					folium_static(carte, width=1000, height=600)
+
+					#st.download_button(f"<a href='examplefile.pdf' download><img src='/images/bouton-de-téléchargement.jpg'></a>")
 
 			if page == "Carte de chaleur":
 
