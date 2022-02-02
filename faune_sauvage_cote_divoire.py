@@ -20,6 +20,7 @@ import time
 from pathlib import Path 
 import base64
 import pickle
+import datetime 
 #from sklearn.linear_model import LogisticRegression
 #from sklearn.model_selection import train_test_split
 
@@ -32,13 +33,19 @@ st.set_page_config(page_title='App.Conflits-DFRC/MINEF',
 
 def main():
 
+		st.markdown("""<style> 
+			header{visibility:show;} 
+			footer{visibility:hidden;} 
+			#MainMenu{visibility:show;}
+			</style>""", unsafe_allow_html=True)
+
 		#img_1, img_2, img_3 = st.columns([0.1, 0.5, 0.1])
 		st.sidebar.header('CONTROLEUR DE DONNEES')
 
 		st.sidebar.markdown("""---""")
 		
 		st.sidebar.subheader('CHOISIR LA VUE A AFFICHER')		
-		menu = ["Données", "Tableau de bord", "Cartographie"]
+		menu = ["Données 💾", "Tableau de bord 📈", "Cartographie 🌈"]
 		choix = st.sidebar.selectbox("Données * Tableau de bord * Cartographie", menu)
 
 		#option = st.selectbox('Please Select', ['POWERBI', 'ok'])
@@ -102,11 +109,41 @@ def main():
                     converters={'NombreBlessé':int})
 		#st.write(df_blesses)
 
+		date_jour = str(datetime.date.today())
+		
+		info_text_1_1=date_jour
 
-		if choix == "Données":
+		#ELEMENTS DU GRAPHIQUE DES CONFLITS
+		elephant_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-ELEPHANT']
+		buffle_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-BUFFLE']
+		chimpanze_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CHIMPANZE']
+		hippo_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-HIPPOPOTAME']
+		crocodile_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CROCODILE']
+		rino_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-RHINOCEROS']
+		leopard_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-LEOPARD']
+		singe_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-SINGES']
+		epervier_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-EPERVIER']
+		chauve_graph = df_conflit[df_conflit['Typologie'] == 'HOMME-CHAUVE SOURIS']
+		
+
+		valeur_foyer_select = elephant_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		#st.write(valeur_foyer_select.rename(columns={'Typologie': 'Nombre'}))
+
+		valeur_foyer_select1 = buffle_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		#st.write(valeur_foyer_select1.rename(columns={'Typologie': 'Nombre'}))
+		valeur_foyer_select2 = chimpanze_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select3 = hippo_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select4 = crocodile_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select5 = rino_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select6 = leopard_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select7 = singe_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select8 = epervier_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+		valeur_foyer_select9 = chauve_graph.groupby(by=['Année'], as_index=False)['Typologie'].count()
+
+		if choix == "Données 💾":
 							st.sidebar.markdown("""---""")
-							st.sidebar.markdown('Copyright')
-							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
+							st.sidebar.image("minef.png", width=150, caption='')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#with open('style.css') as f:
 								#st.markdown(f'<style>{f.read()}<style>', unsafe_allow_html=True)
@@ -124,6 +161,8 @@ def main():
 											3. Cartographier les données"""
 											
 							st.markdown(f"<h5 style='text-align: center; color: white;'>{info_text2}</h5></body>", unsafe_allow_html=True)
+							
+							#st.write(info_text_1_1)
 							
 							col1, col2, col_droite = st.columns([0.1,1.8, 0.1])
 							#col2.markdown(
@@ -208,7 +247,10 @@ def main():
 								st.image("epervier.png", use_column_width=False, width=70)# caption = 'Epervier')
 								pp8=valeur['percent'].values[9]
 								st.markdown(f"<h6 style='text-align: center; color: PaleGreen;'>{txt.format(pp8)}</h6>", unsafe_allow_html=True)
-								
+							#colonne_calcule2 = ['Mort', 'Blessé', 'Autres victimes culture et matériel']
+							
+
+							
 							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
 							lm2.markdown("""---""")
 							info_text4="""Tableaux Statistiques des données de conflits"""
@@ -283,7 +325,7 @@ def main():
 
 							lm1, lm2, lm3 = st.columns([0.5, 1, 0.5])
 							lm2.markdown("""---""")
-							info_text5="""Données collectées de 2011 à 2022"""
+							info_text5="""Données collectées de 2011 à """ + info_text_1_1
 							st.markdown(f"<h2 style='text-align: center; color: white;'>{info_text5}</h2></body>", unsafe_allow_html=True)
 
 							#st.subheader("Données des Conflits Homme-Faune de 2011 à 2022")
@@ -367,10 +409,11 @@ def main():
 							#st.dataframe(df_conflit_selection)
 							#st.sidebar.text(f'voir le resultat ci-dessous')
 				
-		elif choix == "Tableau de bord":
+		elif choix == "Tableau de bord 📈":
 							st.sidebar.markdown("""---""")
-							st.sidebar.markdown('Copyright')
-							st.sidebar.image("minef.png", width=70, caption='MINEF')
+							st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
+							#st.markdown(f"<h6 style='text-align: center; color: yellow;'>{info_text}</h6>", unsafe_allow_html=True)
+							st.sidebar.image("minef.png", width=150, caption='')
 							#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 							#st.markdown("https://app.powerbi.com/links/vkkaAgsrD6?ctid=eecc4b36-240a-4a05-b3bc-72718c4c513f&pbi_source=linkShare")
 							#st.components.html
@@ -379,7 +422,7 @@ def main():
 							#st.dataframe(data=df_conflit, height=600)
 							#st.download_button(label='Telecharger données', data='conflit_faune.xlsx', file_name='donnees_CHF.xlsx')
 							repre_1, repre_2, repre_3 = st.columns([0.7, 1.5, 0.5])
-							repre_2.subheader("REPRESENTATION GRAPHIQUE DES DONNEES")
+							repre_2.subheader("REPRESENTATION GRAPHIQUE DES DONNEES 📈")
 							st.markdown("""---""")
 
 							part_typologie, part_annee = st.columns(2)
@@ -437,7 +480,7 @@ def main():
 															)
 												)
 
-							fig_annee.update_layout(title="Evolution des conflits entre 2011 et 2022",
+							fig_annee.update_layout(title="Evolution des conflits de 2011 à " + info_text_1_1,
 												xaxis_title="Année de conflit", 
 												yaxis_title="Effectif des conflit", 
 												legend_title="Légende",
@@ -516,7 +559,7 @@ def main():
 																)
 														)
 											)
-							fig_1.update_layout(title="Evolution des effectifs des blessés et morts entre 2011 et 2022", 
+							fig_1.update_layout(title="Evolution des effectifs des blessés et morts de 2011 à " + info_text_1_1, 
 												xaxis_title="Année de conflit", 
 												yaxis_title="Nombre de Mort + Blessé", 
 												legend_title="Légende",
@@ -558,7 +601,7 @@ def main():
 															width=2, 
 															dash='dashdot')))
 
-							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) entre 2011 et 2022",
+							fig_2.update_layout(title="Evolution des effectifs des victimes (matériels & cultures) de 2011 à " + info_text_1_1,
 												xaxis_title="Année de conflit", yaxis_title="Nombre de victime", legend_title="Légende",
 												xaxis=dict(
 													showline=True,
@@ -608,8 +651,124 @@ def main():
 											    										    
 							figure_2.write(fig_2)
 
+							graph_4, graph_5, graph_6 = st.columns([0.5, 1, 0.5])
+							#DIAGRAMME D'EVOLUTION DES DIFFERENTS TYPES DE CONFLITS
+							fig_elephant = go.Figure()
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select.Année, 
+															y=valeur_foyer_select.Typologie,mode= 'lines+markers',name='Elephant',  
+															line=dict(color='red', width=2, dash='dashdot')	
+															))
+												
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select1.Année, y=valeur_foyer_select1.Typologie,
+														mode= 'lines+markers', 
+														name='Buffle', 
+														line=dict(color='goldenrod', width=2, dash='dashdot')))
 
-							
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select2.Année, y=valeur_foyer_select2.Typologie,
+														mode= 'lines+markers', name='Chimpanzé',
+														line=dict(color='green',width=2,dash='dashdot' 
+																)))
+															
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select3.Année, y=valeur_foyer_select3.Typologie,
+														mode= 'lines+markers', 
+														name='Hippopotame', 
+														line=dict(
+																color='violet', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select4.Année, y=valeur_foyer_select4.Typologie,
+														mode= 'lines+markers', 
+														name='Crocodile', 
+														line=dict(
+																color='navy', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select5.Année, y=valeur_foyer_select4.Typologie,
+														mode= 'lines+markers', 
+														name='Rhinoceros', 
+														line=dict(
+																color='lightskyblue', 
+																width=2, 
+																dash='dashdot'
+																)
+														)
+											)
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select6.Année, y=valeur_foyer_select6.Typologie,
+														mode= 'lines+markers', 
+														name='Léopard', 
+														line=dict(color='darkviolet', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select7.Année, y=valeur_foyer_select7.Typologie,
+														mode= 'lines+markers', 
+														name='Singe', 
+														line=dict(color='black', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select8.Année, y=valeur_foyer_select8.Typologie,
+														mode= 'lines+markers', 
+														name='Epervier', 
+														line=dict(color='pink', width=2, dash='dashdot')))
+
+							fig_elephant.add_trace(go.Scatter(x=valeur_foyer_select9.Année, y=valeur_foyer_select9.Typologie,
+														mode= 'lines+markers', 
+														name='Chauve-souris', 
+														line=dict(color='yellow', width=2, dash='dashdot')))
+
+							fig_elephant.update_layout(title="Evolution de chaque types de conflits de 2011 à " + info_text_1_1,
+												xaxis_title="Année de conflit", 
+												yaxis_title="Nombre de conflits", 
+												legend_title="Conflit",
+												xaxis=dict(
+														showline=True,
+														showgrid=True,
+														showticklabels=True,
+														linecolor='rgb(4, 4, 4)',
+														linewidth=2,
+													    ticks='outside',
+													    tickfont=dict(
+													    		family='Arial',
+													    		size=12,
+													    		color='rgb(255, 255, 255)')
+													    ),
+												    # Turn off everything on y axis
+											    yaxis=dict(
+											        showgrid=True,
+											        zeroline=False,
+											        showline=False,
+											        showticklabels=True
+												),
+												paper_bgcolor='#5D6D7E',
+    											plot_bgcolor='white')
+
+							fig_elephant.update_xaxes(gridcolor='black',
+													tickfont=dict(family='Arial', 
+														color='white',size=12), 
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+
+							fig_elephant.update_yaxes(
+													gridcolor='black',
+													tickfont=dict(
+														family='Arial', 
+														color='white', 
+														size=12),
+													title_font=dict(
+														color='white', 
+														size=16
+														)
+													)
+							graph_5.write(fig_elephant)
 
 							#st.write(annee_diagramme)
 							#CREATION DE COLONNE POUR DISPOSITION ELEMENTS  
@@ -621,7 +780,7 @@ def main():
 												y = 'Nombre',
 												color = 'Attribut',
 												barmode="group",
-												title='Effectif des morts, des blessés et des victimes par type de conflit',
+												title='Effectif des morts, des blessés et des victimes par type de conflit de 2011 à ' + info_text_1_1,
 												hover_name="Typologie conflit",
 												#color_continuous_scale=['red', 'yellow', 'green'],
 												#template='plotly_white',
@@ -700,7 +859,7 @@ def main():
 												y = 'Typologie',
 												
 												
-												title='Effectif des conflit par departement (Foyer de conflit)',
+												title='Effectif des conflit par departement (Foyer de conflit) de 2011 à ' + info_text_1_1,
 												hover_name="Département",
 												#color_continuous_scale=['red', 'yellow', 'green'],
 												#template='plotly_white',
@@ -834,14 +993,14 @@ def main():
 
 
 
-		elif choix == "Cartographie":
+		elif choix == "Cartographie 🌈":
 
 			page_nom = ["Carte de conflits", "Carte de chaleur" ]
 			page = st.sidebar.radio('Aller à', page_nom)
 
 			st.sidebar.markdown("""---""")
-			st.sidebar.markdown('Copyright')
-			st.sidebar.image("minef.png", width=70, caption='MINEF')
+			st.sidebar.markdown(f"<h6 style='text-align: center; color: yellow;'>{'Copyright : Decembre 2021 Service Cartographique DFRC'}</h6>", unsafe_allow_html=True)
+			st.sidebar.image("minef.png", width=150, caption='')
 			#st.sidebar.image("dfrc.png", width=100, caption='DFRC')
 
 
@@ -883,7 +1042,7 @@ def main():
 
 					# VARIABLE POUR AFFICHER LA CARTE
 					carte = folium.Map(location=[7.3056, -5.3888], zoom_start=7, control_scale=True,
-										max_bounds=True) # min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30prefer_canvas=True
+										max_bounds=True, min_lat=4.05, max_lat=10.80, min_lon=-8.86, max_lon=-2.30, prefer_canvas=True)
 					
 
 					#OUTILS DESSINS
@@ -1153,8 +1312,13 @@ def main():
 					#MESURE SUR LA CARTE
 					carte.add_child(MeasureControl(position='bottomleft', primary_area_unit='hectares', secondary_area_unit='sqmeters', primary_length_unit='kilometers', secondary_length_unit='meters',))
 					
-					# AFFICHER LA CARTE DANS STREAMLIT
-					folium_static(carte, width=1070, height=700)
+					#kl, ol, mp = st.columns([0.5, 1, 0.5])
+					#with ol:
+
+						# AFFICHER LA CARTE DANS STREAMLIT
+					folium_static(carte, width=1000, height=600)
+
+					#st.download_button(f"<a href='examplefile.pdf' download><img src='/images/bouton-de-téléchargement.jpg'></a>")
 
 			if page == "Carte de chaleur":
 
