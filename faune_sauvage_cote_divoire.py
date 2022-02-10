@@ -92,7 +92,7 @@ def main():
                     sheet_name='DONNEES',
                     usecols='A:Q',
                     header=0,
-                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
+                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":str})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
 		
 		#df_mort = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
@@ -1094,6 +1094,17 @@ def main():
 							icon = icon_elephant,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
+
+					#for (index, row) in df_conflit_elephant.iterrows():
+						#icon_elephant = folium.features.CustomIcon('./elephant2.png', icon_size=(30,30))
+						#iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+						#	+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+						#	+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
+						#popup = folium.Popup(iframe, min_width=300, max_width=300)
+						#folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
+						#	icon = icon_elephant,  
+						#	popup = popup,
+						#	tooltip="cliquer pour info").add_to(carte)
 
 					#BUFFLES UNIQUEMENT DANS LA CARTE
 					#icon_buffle = folium.features.CustomIcon('Buffle.png', icon_size=(100,100))
