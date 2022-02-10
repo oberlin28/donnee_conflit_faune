@@ -357,7 +357,7 @@ def main():
 							# display the dataset in a table format
 							# if you'd like to customize it more, consider plotly tables: https://plotly.com/python/table/
 							# I have a YouTube tutorial that can help you in this: https://youtu.be/CYi0pPWQ1Do
-							st.dataframe(data=display_data, height=800)
+							st.dataframe(data=display_data, height=400)
 
 
 							#st.markdown("""---""")
