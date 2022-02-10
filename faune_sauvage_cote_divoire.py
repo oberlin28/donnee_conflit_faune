@@ -90,9 +90,9 @@ def main():
 			#st.dataframe(op)
 		df_conflit = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='DONNEES',
-                    usecols='A:Q',
+                    usecols='A:U',
                     header=0,
-                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":str})
+                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "Nombre d'animaux":str})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
 		
 		#df_mort = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
