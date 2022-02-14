@@ -90,9 +90,9 @@ def main():
 			#st.dataframe(op)
 		df_conflit = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
                     sheet_name='DONNEES',
-                    usecols='A:Q',
+                    usecols='A:U',
                     header=0,
-                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "nombre d'animaux":int})
+                    converters={'Année':int,'Autres victimes culture et matériel':int, 'Mort':int, 'Blessé':int, "Nombre d'animaux":str})
 							                    #dtype={'Année': np.int32, 'Autres victimes culture et matériel': np.int32})
 		
 		#df_mort = pd.read_excel(io='BD_conflitHommeFaune.xlsx',
@@ -357,7 +357,7 @@ def main():
 							# display the dataset in a table format
 							# if you'd like to customize it more, consider plotly tables: https://plotly.com/python/table/
 							# I have a YouTube tutorial that can help you in this: https://youtu.be/CYi0pPWQ1Do
-							st.dataframe(data=display_data, height=800)
+							st.dataframe(data=display_data, height=400)
 
 
 							#st.markdown("""---""")
@@ -1094,6 +1094,17 @@ def main():
 							icon = icon_elephant,  
 							popup = popup,
 							tooltip="cliquer pour info").add_to(markerCluster_elephant)
+
+					#for (index, row) in df_conflit_elephant.iterrows():
+						#icon_elephant = folium.features.CustomIcon('./elephant2.png', icon_size=(30,30))
+						#iframe = folium.IFrame('<b>'+'<br>'+ "INFORMATION" +'</br>'+'</b>' + '<b>'+'<br>'+"Conflit : "+'</b>'+ row.loc["Typologie"] 
+						#	+ '<br>'+'<b>'+'<br>'+"Localité : "+'</b>'+ row.loc["Localité"]+'</br>' + '<b>'+'<br>' 
+						#	+ "Année : "+'</b>'+ str(row.loc["Année"])+'</br>')
+						#popup = folium.Popup(iframe, min_width=300, max_width=300)
+						#folium.Marker(location=[row.loc["Latitude"], row.loc["Longitude"]],
+						#	icon = icon_elephant,  
+						#	popup = popup,
+						#	tooltip="cliquer pour info").add_to(carte)
 
 					#BUFFLES UNIQUEMENT DANS LA CARTE
 					#icon_buffle = folium.features.CustomIcon('Buffle.png', icon_size=(100,100))
